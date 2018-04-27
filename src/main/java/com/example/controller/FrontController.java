@@ -11,4 +11,9 @@ public class FrontController {
 	public String index(Model model) {
 		return "index";
 	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
 }
