@@ -32,4 +32,10 @@ public class FrontController {
         //model.addAttribute ("students", students);
         return "riwayatSurat";
     }
+
+	@RequestMapping("/listSurat")
+	public String listSurat() {
+		return "listSurat";
+	}
+
 }

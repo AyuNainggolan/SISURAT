@@ -7,6 +7,74 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+.custom-frm .form-control {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 10px 0px;
+    background: none;
+    color: #999;
+    padding: 5px;
+}
+
+.custom-frm .form-control::placeholder {
+    padding: 10px 0px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.custom-frm .form-control:focus {
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem;
+    padding: 5px !important;
+    background: none;
+    color: #999 !important;
+}
+.custom-frm .btn-register {
+    display: inline-block;
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    border-radius: 4px;
+}
+
+.custom-frm .box {
+    background:#fff;
+    border-radius: 5px;
+    padding: 30px 20px;
+    box-shadow: 0 3px 3px rgba(0,0,0,.3);
+    width: 80%;
+    margin: 0 auto;
+    z-index: 99999 !important;
+}
+
+.custom-frm .form-control {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 10px 0px;
+    background: none;
+    color: #999;
+    padding: 5px;
+}
+
+.custom-frm .form-control::placeholder {
+    padding: 10px 0px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.custom-frm .form-control:focus {
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem;
+    padding: 5px !important;
+    background: none;
+    color: #999 !important;
+}
+
+
 body {
   background: #fff;
   color: #666666;
@@ -14,11 +82,12 @@ body {
 }
 
 a {
-  color: #2dc997;
+  /* color: #2dc997; */
+  color: #ffffff;
 }
 
 a:hover, a:active, a:focus {
-  color: #2dca98;
+  color: #007bff;
   outline: none;
   text-decoration: none;
 }
@@ -90,11 +159,38 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
   transition: all 0.5s;
   z-index: 997;
-  background: #032b43;
+/*   background: #032b43; */
+}
+
+#header2 {
+  padding: 30px 0;
+  height: 92px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  transition: all 0.5s;
+  z-index: 997;
+  /* background: #032b43; */
+  background: url(../img/polygonal.png) top center;
+}
+
+#header2:before {
+  content: "";
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 #header #logo {
-  float: left;
+  text-align: center;
+}
+
+#header2 #logo {
+  text-align: center;
 }
 
 #header #logo h1 {
@@ -108,8 +204,19 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 
-#header #logo h2 {
+#header2 #logo h1 {
   font-size: 36px;
+  margin: 0;
+  padding: 6px 0;
+  line-height: 1;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+#header #logo h2 {
+  font-size: 28px;
   margin: 0;
   padding: 6px 0;
   line-height: 1;
@@ -121,12 +228,24 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-
-#header #logo h1 a, #header #logo h1 a:hover {
+#header2 #logo h2 {
+  font-size: 28px;
+  margin: 0;
+  padding: 6px 0;
+  line-height: 1;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: #fff;
 }
 
-#header #logo img {
+#header #header2 #logo h1 a, #header #logo h1 a:hover {
+  color: #fff;
+}
+
+#header #header2 #logo img {
   padding: 0;
   margin: 0;
 }
@@ -153,7 +272,7 @@ h1, h2, h3, h4, h5, h6 {
 #hero {
   width: 100%;
   height: 100vh;
-  background: url(../img/education1.png) top center;
+  background: url(../img/polygonal.png) top center;
   background-size: cover;
   position: fixed;
 }
@@ -161,7 +280,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #heroV2 {
     display: block;
-    width: 100%;
+    width: 97%;
 /*     height: 110px; */
     background-size: cover;
     background-position: top center;
@@ -171,10 +290,10 @@ h1, h2, h3, h4, h5, h6 {
 
 #heroV2 .hero-container {
     margin-top: 0;
-    padding: 0 10px;
+/*     padding: 0 10px; */
 /*     text-align: center; */
     vertical-align: middle;
-    padding: 150px 10px 100px 10px;
+    padding: 150px 10px 120px 10px;
 }
 .text-left{
 	text-align: left;
@@ -183,6 +302,58 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: right;
 }
 
+.input-group-addon {
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+/*     border-radius: .25rem; */
+}
+
+#footer {
+    background: url(../img/polygonal.png) top center;
+    padding: 15px 0;
+  	color: #fff;
+    font-size: 14px;
+    position: relative;
+    z-index: 100;
+    bottom: 0;
+}
+
+#footer:before {
+  content: "";
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#footer .copyright {
+    text-align: left;
+}
+
+#footer .credits {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #ccc;
+}
+
+#footer .footer-list {
+    list-style: none;
+    text-color: #ccccc;
+}
+
+#footer .footer-list ul li:first-child {
+    text-color: #2dca98;
+}
 @media (min-width: 1024px) {
   #hero {
     background-attachment: fixed;
@@ -994,12 +1165,12 @@ body.mobile-nav-active #mobile-nav-toggle {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-#footer {
-  background: #343b40;
+/* #footer {
+  background: url(../img/polygonal.png) top center;
   padding: 30px 0;
   color: #fff;
   font-size: 14px;
-}
+} */
 
 #footer .copyright {
   text-align: center;
@@ -1015,4 +1186,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 button {
 	margin-left: 15px;
 }
+
+
 
