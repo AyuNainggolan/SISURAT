@@ -7,8 +7,6 @@ import com.example.model.PengajuanSuratModel;
 
 @Mapper
 public interface PengajuanSuratMapper {
-	 @Select("select * from pengajuan_surat where no_surat = #{no_surat}")
+	 @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	 PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
-	 
-//	 username_pengaju, id_jenis_surat, keterangan, id_status_surat
 }

@@ -1,5 +1,7 @@
 package com.example.service;
 
-public interface JenisSuratService {
+import com.example.model.JenisSuratModel;
 
+public interface JenisSuratService {
+	JenisSuratModel selectJenisSurat(int id_jenis_surat);
 }
