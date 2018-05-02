@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 <title>Sistem Informasi Surat</title>
 </head>
@@ -33,12 +32,23 @@
 <script type="text/javascript"
 	th:src="@{/js/jquery.form-validator.min.js}"></script>
 </head>
-<header id="header" th:fragment="header">
+<header id="header2" th:fragment="header2">
 	<div class="container">
 
 		<div id="logo">
-			<h2>Sistem Informasi Surat</h2>
+<!-- 			<h2>Sistem Informasi Surat</h2> -->
 		</div>
+
+				      <nav id="nav-menu-container">
+				        <ul class="nav-menu">
+				          <li th:class="${url} == 'home' ? 'menu-active': ''"><a href="/">Home</a></li>
+				          <li th:class="${url} == 'tambah' ? 'menu-active': ''"><a href="/mahasiswa/tambah">Tambah Mahasiswa</a></li>
+				          <li th:class="${url} == 'kelulusan' ? 'menu-active': ''"><a href="/kelulusan">Kelulusan Mahasiswa</a></li>
+				          <li th:class="${url} == 'cari' ? 'menu-active': ''"><a href="/mahasiswa/viewCari">Cari Mahasiswa</a></li>
+				        </ul>
+				      </nav>
+
+
 
 	</div>
 </header>
