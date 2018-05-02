@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.model.*;
+import com.example.model.PengajuanSuratModel;
+import com.example.service.PengajuanSuratService;
 
 @RestController
 @RequestMapping("/rest")
 public class SuratRestController {
-//	@Autowired
-//	StudentService studentService;
-//	
-//	@RequestMapping("/student/view/{npm}")
-//	public StudentModel view (@PathVariable(value="npm")String npm) {
-//		StudentModel student = studentService.selectStudent(npm);
-//		return student;
-//	}
+	@Autowired
+	PengajuanSuratService pengajuanSuratService;
+	
+	@RequestMapping("/surat/view/{no_surat}")
+	public PengajuanSuratModel view (@PathVariable(value="no_surat") String no_surat) {
+		PengajuanSuratModel surat = pengajuanSuratService.getStatusSurat(no_surat);
+		return surat;
+	}
 //	
 //	@RequestMapping("/student/viewall")
 //	public List<StudentModel> viewall () {
