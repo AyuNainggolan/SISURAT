@@ -8,7 +8,6 @@
 	<header id="header" th:replace="fragments/fragment :: header">
 	</header>
 	
-<h2 th:text=" 'Login as ' + ${#httpServletRequest.remoteUser}">Login as</h2>
 	<div th:if="${param.error}">
 			Invalid username and password.
 	</div>
@@ -19,7 +18,7 @@
 	<section id="hero">
 		<div class="hero-container">
 
-			<div class="container custom-frm text-left">
+			<div class="container custom-frm text-left" th:if="${#httpServletRequest.remoteUser}==null">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2 col-center"
 						style="margin: 0 auto;">
@@ -29,7 +28,7 @@
 							</div>
 
 
-							<div class="panel-body ">
+							<div class="panel-body">
 								<form th:action="@{/login}" class="form-horizontal" role="form" method="POST">
 									<div class="form-group">
 										<label for="username" class="col-md-4 control-label">Username</label>
