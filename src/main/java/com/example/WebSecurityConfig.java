@@ -16,6 +16,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
 		.antMatchers("/").permitAll()
+		.antMatchers("/css/**").permitAll()
+		.antMatchers("/lib/**").permitAll()
+		.antMatchers("/js/**").permitAll()
+		.antMatchers("/img/**").permitAll()
 		.anyRequest()
 		.authenticated()
 		.and()
@@ -25,13 +29,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout().permitAll();
 	}
 	
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+//		auth.inMemoryAuthentication()
+//		.withUser("admin").password("admin").roles("ADMIN");
+//		auth.inMemoryAuthentication()
+//		.withUser("user").password("user").roles("USER");
+//	}
+	
 	@Autowired
 	DataSource dataSource;
 	
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception{
 		auth.jdbcAuthentication().dataSource(dataSource)
-		.usersByUsernameQuery("select username, password, role from user_account where username=?")
+		.usersByUsernameQuery("select username, password, 1 from user_account where username=?")
 		.authoritiesByUsernameQuery("select username, role from user_account where username=?");
 	}
+	
 }

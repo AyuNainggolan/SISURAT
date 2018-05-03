@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	
+	<head>
+		<meta charset="ISO-8859-1" />
+		<title>Login Page</title>
+	</head>
+	
+	<body>
+	<h2 th:text=" 'Login as ' + ${#httpServletRequest.remoteUser}">Login as</h2>
+		
+	</body>
+</html>
