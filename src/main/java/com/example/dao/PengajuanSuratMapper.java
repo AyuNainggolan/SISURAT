@@ -16,13 +16,13 @@ import com.example.model.PengajuanSuratModel;
 import com.example.model.StatusSuratModel;
 import com.example.model.UserAccountModel;
 
+import com.example.model.PengajuanSuratModel;
+
 @Mapper
 public interface PengajuanSuratMapper {
-//    @Select("select id,no_surat,username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, username_pegawai, id_status_surat from pengajuan_surat")
-//    List<PengajuanSuratModel>selectAllPengajuan();
-    
-//    @Select("select id,no_surat,username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, username_pegawai, id_status_surat from pengajuan_surat where username_pengaju=#{username}")
-//    List<PengajuanSuratModel> selectPengajuan (@Param("username") String username);
+	
+	@Select("SELECT * FROM pengajuan_surat WHERE id = #{id_pengajuan_surat}")
+    PengajuanSuratModel getDetailPengajuanSurat (@Param("id_pengajuan_surat") int id_pengajuan_surat);
     
     @Select("select * from pengajuan_surat where username_pengaju=#{username}")
     @Results(value= {
