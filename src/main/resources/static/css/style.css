@@ -163,7 +163,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header2 {
-  padding: 30px 0;
+/*   padding: 30px 0; */
   height: 92px;
   position: fixed;
   left: 0;
@@ -806,7 +806,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 #services {
   background: #fff;
   background-size: cover;
-  padding: 80px 0 60px 0;
+  padding: 35px 20px 60px 80px;
 }
 
 #services .box {
@@ -1186,6 +1186,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 button {
 	margin-left: 15px;
 }
+
+
 
 
 

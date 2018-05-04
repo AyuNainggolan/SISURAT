@@ -35,11 +35,11 @@
 <header id="header2" th:fragment="header2">
 	<div class="container">
 
-		<div id="logo">
-<!-- 			<h2>Sistem Informasi Surat</h2> -->
+		<div id="logo" style="float:left;">
+			<img style="margin-left:4%;max-width:180px;" th:src="@{/img/logo-fasilkom-baru.png}" />
 		</div>
 
-				      <nav id="nav-menu-container">
+				      <nav id="nav-menu-container" style="padding-top:35px;">
 				        <ul class="nav-menu">
 				          <li th:class="${url} == 'home' ? 'menu-active': ''"><a href="/">Home</a></li>
 				          <li th:class="${url} == 'tambah' ? 'menu-active': ''"><a href="/mahasiswa/tambah">Tambah Mahasiswa</a></li>
@@ -52,6 +52,8 @@
 
 	</div>
 </header>
+
+
 <footer id="footer" th:fragment="footer">
 	<div class="footer-top">
 		<div class="container">
