@@ -1,5 +1,10 @@
 package com.example.service;
 
-public interface PengajuanSuratService {
+import java.util.List;
 
+import com.example.model.PengajuanSuratModel;
+
+public interface PengajuanSuratService {
+//	List<PengajuanSuratModel> selectAllPengajuan();
+	List<PengajuanSuratModel> selectPengajuan (String username_pengaju);
 }

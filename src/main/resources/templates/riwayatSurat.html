@@ -1,132 +1,63 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>View Student</title>
-		<link rel="stylesheet" href="/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<style>
-			ul {
-    			list-style-type: none;
-    			margin: 0;
-    			padding: 0;
-    			overflow: hidden;
-    			background-color: #333;
-			}
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head">
+</head>
 
-			li {
-    			float: left;
-			}
+<body>
 
-			li a {
-    			display: block;
-    			color: white;
-    			text-align: center;
-    			padding: 14px 16px;
-    			text-decoration: none;
-			}
+	<header id="header2" th:replace="fragments/fragment2 :: header2">
+	</header>
 
-			li a:hover {
-    			background-color: #111;
-			}
-			
-			.button {
-				background-color: red;
-				font-size: 20px;
-				color: white;
-				margin: 2px 700px;
-				border-radius: 10px;
-			}
-			.button1 {
-				background-color: green;
-				font-size: 20px;
-				color: white;
-				margin: 2px 700px;
-				border-radius: 10px;
-			}
-			.form_caja {
-    			width: 524px;
-   				padding-top: 8px;
-    			padding-bottom: 15px;
-    			margin: 0 auto 20px auto;
-    			background-color: #446bb3;
-     			border-radius: 15px;
-    			-moz-border-radius: 15px;
-    			-webkit-border-radius: 15px;
-    			color: #446bb3;
-    			padding:10px;
-			}
-			table { background-color : #fff; color : #443}
-			thead { background-color: #446bb3  ; color : #fff; font: bold 14px verdana; padding:4px; line-height:30px}
-			tbody tr:nth-child(even) {background: #CCC;}
-			tbody tr:nth-child(odd) {background: #FFF}
-		</style>
-		
-	</head>
-	<body>
-		<ul>
-			<li><a href="#home">SI Kemahasiswaan</a></li>
-  			<li><a class="active" href="#home">Home</a></li>
-  			<li><a href="#cari">Tambah Mahasiswa</a></li>
-			<li><a href="#cari">Kelulusan Mahasiswa</a></li>
-			<li><a href="#cari">Cari Mahasiswa</a></li>
-		</ul>
-		<div class="container">
-			<h3>Daftar Surat </h3>
-    <div class="form_caja">
-    <table width="100%" cellpadding="2" cellspacing="2">
-        <tbody>
-            <tr>
-                <td width=30%>Nama Pemohon</td>
-                <td th:text="${student.agama}">nama
-                </td>
-            </tr>
-            <tr>
-                <td>Jenis Surat</td>
-                <td>
-                    <select name="jenisSurat">
-                        <option value="all">Semua Jenis Surat</option>
-                        <option value="1" >Surat Keterangan Pernah Jadi Mahasiswa</option>         
-                        <option value="2" >Surat Tugas Lomba</option>
-                        <option value="3" >Surat Rekomendasi Lomba</option>
-                        <option value="4" >Surat Keterangan Lulus</option>
-                    </select>
-                </td>
-            </tr>
-            <tr> 
-            	<td>-</td>>
-            </tr>
-            </tbody>
-    </table>
-</div>
-    </div>
-    <div class="container" style="margin-left:120px;margin-right:120px;">
+	<section id="heroV2">
+    <div class="hero-container">
+      <div class="row justify-content-md-center">
+      <div class="col-md-10">
+      		<h2>Daftar Surat</h2>
+      		        <div class="container" style="margin-left:120px;margin-right:120px;">
 			<table id="student-table" class="stripe" style="width:100%">
 	        <thead>
 	            <tr>
-	                <th>Nomor Surat</th>
+	                <th>No.</th>
+	                <th>No.Surat</th>
 	                <th>Jenis Surat</th>
-	                <th>Nama Mahasiswa</th>
-	                <th>NPM Mahasiswa</th>
+	                <th>Nama</th>
+	                <th>NPM</th>
 	                <th>Tanggal Permohonan</th>
-	                <th>Nama Admin</th>
+	                <th>Nama admin</th>
 	                <th>Status Surat</th>
+	                <th>Action</th>
+	            </tr>
 	        </thead>
 	        <tbody>
-	        	<tr th:each="student, iterationStatus: ${students}" th:class="${iterationStatus.odd} ? 'odd'">
-	        		<td th:text="${iterationStatus.count}"></td>
-	        		<td th:text="${student.npm}"></td>
-	        		<td th:text="${student.name}"></td>
-	        		<td th:text="${student.gpa}"></td>
-	        		<td th:text="${student.gpa} >= 3.49 ? 'Cum Laude!' : 'Sangat Memuaskan!'"></td>
+	        	<tr th:each="item, iterationStatus: ${letter}" th:class="${iterationStatus.odd}?'odd'">
+        			<td th:text="${iterationStatus.count}"></td>
+	        		<td th:text="${item.no_surat}"></td>
+        		<td th:text="${item.jenis_surat.nama}"></td>
+        		<td th:text="${item.accountMahasiswa.mhs.nama}"></td>
+	        		 <td th:text="${item.accountMahasiswa.mhs.npm}"></td>
+	        		<td th:text="${item.tgl_mohon}"></td>
+	        		<td th:text="${item.accountPegawai.username}"></td> 
+	        		<td th:text="${item.statusSurat.nama}"></td> 
+<!-- 	        		<td> -->
+<!-- 	        			<a th:href="'/student/delete/' + ${student.npm}" >Detail</a> -->
+<!-- 	        		</td> -->
 	        	</tr>
 	        </tbody>
+	    </table>
     </div>
-	</body>
-</html>
+      	</div>
+      </div>
+    </div>
+  </section>
+	
+	<footer id="footer" th:replace="fragments/fragment :: footer">
+	</footer>
+</body>
 <script th:inline="javascript">
 $(document).ready(function() {
 	$('#student-table').DataTable();
 } );
 </script>
+</html>
+
+
