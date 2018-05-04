@@ -27,14 +27,9 @@ public class FrontController {
 	
     @Autowired
     MahasiswaService studentDAO;
+    
     @Autowired
 	PengajuanSuratService pengajuanSuratDAO;
-    
-    @Autowired
-    PengajuanSuratService pengajuanSuratDAO;
-    
-    @Autowired
-    StatusSuratService statusSuratDAO;
     
     @Autowired
     PegawaiService pegawaiDAO;
