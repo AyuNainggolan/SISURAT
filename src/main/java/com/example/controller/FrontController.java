@@ -27,6 +27,11 @@ public class FrontController {
 		return "index";
 	}
 	
+	@RequestMapping("/login")
+	public String login() {
+		return "index";
+	}
+
     @RequestMapping("/pengajuan/riwayat")
     public String view (Model model)
     {
