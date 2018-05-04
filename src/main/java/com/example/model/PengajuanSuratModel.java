@@ -22,4 +22,9 @@ public class PengajuanSuratModel {
 	private int id_matkul_terkait;
 	private String username_pegawai;
 	private int id_status_surat;
+	private JenisSuratModel jenis_surat;
+	private UserAccountModel accountMahasiswa;
+	private UserAccountModel accountPegawai;
+	private StatusSuratModel statusSurat;
+	
 }

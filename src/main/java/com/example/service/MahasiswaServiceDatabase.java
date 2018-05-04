@@ -16,5 +16,17 @@ public class MahasiswaServiceDatabase implements MahasiswaService{
 	
 	@Autowired
 	private MahasiswaMapper mahasiswaMapper;
-	
+
+//	@Override
+//	public String getNamaMhs(String username) {
+//		log.info ("select student with username {}", username);
+//		return mahasiswaMapper.getNamaMhs(username);
+//	}
+//
+//	@Override
+//	public String getNPMMhs(String username) {
+//		log.info ("select student with username {}", username);
+//		return mahasiswaMapper.getNPMMhs(username);
+//	}
+
 }
