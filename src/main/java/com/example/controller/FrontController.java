@@ -51,6 +51,10 @@ public class FrontController {
     	return "riwayatSurat";
     }
     
+    @RequestMapping("/login")
+	public String login() {
+		return "index";
+    }
     
 	@RequestMapping("/listSurat")
 	public String listSurat() {
