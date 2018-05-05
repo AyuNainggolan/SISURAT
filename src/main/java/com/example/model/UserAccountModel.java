@@ -11,4 +11,6 @@ public class UserAccountModel {
 	private String username;
 	private String password;
 	private String role;
+	private MahasiswaModel mhs;
+	private PegawaiModel pegawai;
 }

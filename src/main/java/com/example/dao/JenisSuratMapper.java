@@ -9,4 +9,7 @@ import com.example.model.JenisSuratModel;
 public interface JenisSuratMapper {
 	@Select("select * from jenis_surat where id = #{id_jenis_surat}")
 	JenisSuratModel selectJenisSurat(@Param("id_jenis_surat") int id_jenis_surat);
+	
+	@Select("Select nama from jenis_surat where id = #{id_jenis_surat}")
+	String getNamaJenisSurat(@Param("id_jenis_surat") int id_jenis_surat);
 }

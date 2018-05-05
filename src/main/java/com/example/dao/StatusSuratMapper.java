@@ -10,4 +10,7 @@ import com.example.model.StatusSuratModel;
 public interface StatusSuratMapper {
 	@Select("select * from status_surat where id = #{id_status_surat}")
 	StatusSuratModel selectStatusSurat(@Param("id_status_surat") int id_status_surat);
+
+	@Select("Select nama from status_surat where id = #{id_status_surat}")
+	String getStatusSurat(@Param("id_status_surat") int id_status_surat);
 }

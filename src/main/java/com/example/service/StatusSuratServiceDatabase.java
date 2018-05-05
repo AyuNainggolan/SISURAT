@@ -19,5 +19,11 @@ public class StatusSuratServiceDatabase implements StatusSuratService {
 		log.info("select * from status surat with id: ", id_status_surat);
 		return statusSuratMapper.selectStatusSurat(id_status_surat);
 	}
+	
+	@Override
+	public String getStatusSurat(int id_status_surat) {
+		log.info ("select letter with id_status_surat {}", id_status_surat);
+		return statusSuratMapper.getStatusSurat(id_status_surat);
+	}
 
 }
