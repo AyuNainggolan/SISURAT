@@ -19,11 +19,11 @@
 								<h3 class="section-title" style="font-size: 24px;">Login</h3>
 							</div>
 
-								<div th:if="${param.error}">
+								<div th:if="${param.error}" style="font-size: 13px;color: red;padding-left: 13px;">
 										Invalid username and password.
 								</div>
-								<div th:if="${param.logout}">
-									You have been logged out.
+								<div th:if="${param.logout}" style="font-size: 13px;color: red;padding-left: 13px;">
+									<i>You have been logged out.</i>
 								</div>
 							<div class="panel-body">
 								<form th:action="@{/login}" class="form-horizontal" role="form" method="POST">

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.example.model.MahasiswaModel;
@@ -26,5 +28,10 @@ public class MahasiswaDAOImpl implements MahasiswaDAO {
 	public MahasiswaModel selectMahasiswaByNPM(String npm) {
 		MahasiswaModel mahasiswa = restTemplate.getForObject("https://apap-fasilkom.herokuapp.com/api/mahasiswa/view/npm/"+npm, MahasiswaModel.class);
 		return mahasiswa;
+	}
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
 	}
 }

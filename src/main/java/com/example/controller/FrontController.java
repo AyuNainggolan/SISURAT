@@ -3,7 +3,11 @@ package com.example.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,17 +42,24 @@ public class FrontController {
     @Autowired
     JenisSuratService jenisSuratDAO;
     
+    @Autowired
+    StatusSuratService statusSuratDAO;
+    
 	@RequestMapping("/")
 	public String index(Model model) {
 		return "index";
 	}
 
-    @RequestMapping("/pengajuan/riwayat/{username_pengaju}")
-    public String viewPengajuanSurat (Model model, @PathVariable(value = "username_pengaju") String username_pengaju)
+    @RequestMapping("/pengajuan/riwayat")
+    public String viewPengajuanSurat (Model model)
     {
     	String namaMahasiswa, namaPegawai;
     	log.info("Test");
-    	List<PengajuanSuratModel> letter = pengajuanSuratDAO.selectPengajuan(username_pengaju);
+    
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	log.info("user logged in"+ name);
+    	List<PengajuanSuratModel> letter = pengajuanSuratDAO.selectPengajuan(name);
     	for(int i=0;i<letter.size();i++) {
     		namaMahasiswa = searchName(letter.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(letter.get(i).getUsername_pegawai());
@@ -60,7 +71,7 @@ public class FrontController {
     }
     
     @RequestMapping("/pengajuan/viewall")
-    public String viewPengajuanSurat(Model model) {
+    public String viewAllPengajuanSurat(Model model) {
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	for(int i=0;i<lstSurat.size();i++) {
@@ -80,6 +91,7 @@ public class FrontController {
     }
     
     public String searchNamaPegawai(String nip) {
+    	log.info("pegawai "+ nip);
     	PegawaiModel lstPegawai = pegawaiDAO.selectPegawaiByNIP(nip);
     	return lstPegawai.getNama();
     }
@@ -96,7 +108,13 @@ public class FrontController {
 	
 	@RequestMapping("/pengajuan/view/{id_pengajuan_surat}")
 	public String detailPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
-		model.addAttribute("surat", pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat));
+		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
+		String npm = surat.getUsername_pengaju();
+		model.addAttribute("surat", surat);
+		model.addAttribute("nama", this.searchName(npm));
+		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
+		model.addAttribute("nama_admin", this.searchNamaPegawai(surat.getUsername_pegawai()));
+		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
 		
 		return "detailPengajuanSurat";
 	}

@@ -1196,6 +1196,23 @@ button {
 	color: black;
 }
 
+#student-table {
+	font-size: 13px;
+}
+
+#student-table th { font-size: 13px; }
+#student-table td { font-size: 12px; }
+
+.dataTables_wrapper {
+    font-family: tahoma;
+    font-size: 13px;
+/*     direction: rtl; */
+    position: relative;
+    clear: both;
+    *zoom: 1;
+    zoom: 1;
+}
+
 
 
 

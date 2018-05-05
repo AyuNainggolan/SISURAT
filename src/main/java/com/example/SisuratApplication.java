@@ -13,7 +13,7 @@ public class SisuratApplication {
 		SpringApplication.run(SisuratApplication.class, args);
 	}
 	
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
-	}
+//	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+//		return builder.build();
+//	}
 }

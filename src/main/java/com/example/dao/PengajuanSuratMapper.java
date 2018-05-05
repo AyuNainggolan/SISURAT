@@ -101,7 +101,7 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuan ();
-}
+
     @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
 }

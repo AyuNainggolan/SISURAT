@@ -20,68 +20,13 @@
 
 					<h4>Detail Surat</h4>
 
-					<!--       		<table class="table table-bordered"> -->
-					<!--                   <tbody class="text-left"> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Nama Mahasiswa</b></td> -->
-					<!-- 							<td th:text="Ayu"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>NPM Mahasiswa</b></td> -->
-					<!-- 							<td th:text="1606954741"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>No Surat</b></td> -->
-					<!-- 							<td th:text="${surat.no_surat}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Jenis Surat</b></td> -->
-					<!-- 							<td th:text="${jenis_surat}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Tanggal Permohonan Surat</b></td> -->
-					<!-- 							<td th:text="${surat.tgl_mohon}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Nama Admin</b></td> -->
-					<!-- 							<td th:text="Puspa"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Status Pengajuan Surat</b></td> -->
-					<!-- 							<td th:text="${status_surat}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Keterangan</b></td> -->
-					<!-- 							<td th:text="${surat.keterangan}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Alasan Izin</b></td> -->
-					<!-- 							<td th:text="${surat.alasan_izin}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Tanggal Mulai Izin</b></td> -->
-					<!-- 							<td th:text="${surat.tgl_mulai_izin}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Tanggal Selesai Izin</b></td> -->
-					<!-- 							<td th:text="${surat.tgl_sls_izin}"></td> -->
-					<!-- 						</tr> -->
-					<!-- 						<tr> -->
-					<!-- 							<td><b>Matakuliah terkait</b></td> -->
-					<!-- 							<td th:text="APAP"></td> -->
-					<!-- 						</tr> -->
-
-					<!--                   </tbody> -->
-					<!--             </table> -->
-
-
 					<table class="table" id="table_custom">
 						<tbody>
 							<tr>
 								<th>Nama Mahasiswa</th>
-								<td>Ayu</td>
+								<td th:text="${nama}"></td>
 								<th width="15%">NPM Mahasiswa</th>
-								<td>1606954741</td>
+								<td th:text="${surat.username_pengaju}"></td>
 							</tr>
 							<tr>
 								<th>No Surat</th>
@@ -93,7 +38,7 @@
 								<th>Tanggal Permohonan</th>
 								<td th:text="${surat.tgl_mohon}"></td>
 								<th>Nama Admin</th>
-								<td>Puspa</td>
+								<td th:text="${nama_admin}"></td>
 							</tr>
 							<tr>
 								<th>Status Pengajuan Surat</th>
