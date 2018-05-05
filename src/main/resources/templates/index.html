@@ -6,13 +6,6 @@
 <body>
 	<header id="header" th:replace="fragments/fragment :: header">
 	</header>
-	
-	<div th:if="${param.error}">
-			Invalid username and password.
-	</div>
-	<div th:if="${param.logout}">
-		You have been logged out.
-	</div>
 		
 	<section id="hero">
 		<div class="hero-container">
@@ -26,7 +19,12 @@
 								<h3 class="section-title" style="font-size: 24px;">Login</h3>
 							</div>
 
-
+								<div th:if="${param.error}">
+										Invalid username and password.
+								</div>
+								<div th:if="${param.logout}">
+									You have been logged out.
+								</div>
 							<div class="panel-body">
 								<form th:action="@{/login}" class="form-horizontal" role="form" method="POST">
 									<div class="form-group">
