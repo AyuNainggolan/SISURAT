@@ -50,7 +50,7 @@ public interface PengajuanSuratMapper {
     		@Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "role", column = "role"),
-            @Result(property = "mhs", column = "username", one = @One(select = "selectMhs"))
+            //@Result(property = "mhs", column = "username", one = @One(select = "selectMhs"))
     })
     UserAccountModel selectUserAccountMhs (@Param("username_pengaju") String username_pengaju);
     
@@ -62,14 +62,14 @@ public interface PengajuanSuratMapper {
     		@Result(property = "nama", column = "nama"),
             @Result(property = "status", column = "status")
     })
-    MahasiswaModel selectMhs (@Param("username") String username);
+    MahasiswaModel selectMhs (@Param("username") String username); 
     
     @Select("select * from user_account where username = #{username_pegawai}")
     @Results( value = {
     		@Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "role", column = "role"),
-            @Result(property = "pegawai", column = "username", one = @One(select = "selectPegawai"))
+            //@Result(property = "pegawai", column = "username", one = @One(select = "selectPegawai"))
     })
     UserAccountModel selectUserAccountPegawai (@Param("username_pegawai") String username_pegawai);
     
@@ -89,4 +89,18 @@ public interface PengajuanSuratMapper {
             @Result(property = "nama", column = "nama")
     })
     StatusSuratModel selectStatusSurat (@Param("id_status_surat") Integer id_status_surat);
+    
+    @Select("select * from pengajuan_surat")
+    @Results(value= {
+    @Result (property="no_surat", column="no_surat"),
+    @Result(property="tgl_mohon", column="tgl_mohon"),
+    @Result(property="id_jenis_surat", column="id_jenis_surat"),
+    @Result(property="jenis_surat", column="id_jenis_surat", one= @One(select="selectJenisSurat")),
+    @Result(property="username_pengaju", column="username_pengaju"),
+    @Result(property="accountMahasiswa", column="username_pengaju", one=@One(select="selectUserAccountMhs")),
+    @Result(property="username_pegawai", column="username_pegawai"),
+    @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
+    @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
+    List<PengajuanSuratModel> selectAllPengajuan ();
 }

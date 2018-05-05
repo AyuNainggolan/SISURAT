@@ -20,10 +20,15 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		return pengajuanSuratMapper.selectPengajuan(username_pengaju);
 	}
   
-  @Override
+	@Override
 	public PengajuanSuratModel getDetailPengajuanSurat(int id_pengajuan_surat) {
 		
 		return pengajuanSuratMapper.getDetailPengajuanSurat(id_pengajuan_surat);
+	}
+	
+	@Override
+	public List<PengajuanSuratModel> selectAllPengajuan() {
+		return pengajuanSuratMapper.selectAllPengajuan();
 	}
 
 }

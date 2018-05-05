@@ -12,21 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class MahasiswaServiceDatabase implements MahasiswaService{
+public class MahasiswaServiceDatabase{
 	
-	@Autowired
-	private MahasiswaMapper mahasiswaMapper;
-
-//	@Override
-//	public String getNamaMhs(String username) {
-//		log.info ("select student with username {}", username);
-//		return mahasiswaMapper.getNamaMhs(username);
-//	}
-//
-//	@Override
-//	public String getNPMMhs(String username) {
-//		log.info ("select student with username {}", username);
-//		return mahasiswaMapper.getNPMMhs(username);
-//	}
-
 }
