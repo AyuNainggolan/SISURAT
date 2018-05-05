@@ -13,4 +13,8 @@ public class MahasiswaModel {
 	private String username;
 	private String nama;
 	private String status;
+	
+	public String getNama() {
+		return nama;
+	}
 }

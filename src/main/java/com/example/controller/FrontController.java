@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.model.MahasiswaModel;
+import com.example.model.PegawaiModel;
 import com.example.model.PengajuanSuratModel;
 import com.example.model.UserAccountModel;
 import com.example.service.JenisSuratService;
@@ -45,10 +46,42 @@ public class FrontController {
     @RequestMapping("/pengajuan/riwayat/{username_pengaju}")
     public String viewPengajuanSurat (Model model, @PathVariable(value = "username_pengaju") String username_pengaju)
     {
+    	String namaMahasiswa, namaPegawai;
     	log.info("Test");
     	List<PengajuanSuratModel> letter = pengajuanSuratDAO.selectPengajuan(username_pengaju);
+    	for(int i=0;i<letter.size();i++) {
+    		namaMahasiswa = searchName(letter.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(letter.get(i).getUsername_pegawai());
+    		letter.get(i).setUsername_pengaju(namaMahasiswa);
+    		letter.get(i).setUsername_pegawai(namaPegawai);
+    	} 
     	model.addAttribute("letter", letter);
     	return "riwayatSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall")
+    public String viewPengajuanSurat(Model model) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    public String searchName(String npm) {
+    	MahasiswaModel lstMahasiswa = studentDAO.selectMahasiswaByNPM(npm);
+    	return lstMahasiswa.getNama();
+    }
+    
+    public String searchNamaPegawai(String nip) {
+    	PegawaiModel lstPegawai = pegawaiDAO.selectPegawaiByNIP(nip);
+    	return lstPegawai.getNama();
     }
     
     @RequestMapping("/login")

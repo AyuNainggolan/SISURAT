@@ -24,6 +24,11 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 	public PengajuanSuratModel getDetailPengajuanSurat(int id_pengajuan_surat) {
 		return pengajuanSuratMapper.getDetailPengajuanSurat(id_pengajuan_surat);
 	}
+	
+	@Override
+	public List<PengajuanSuratModel> selectAllPengajuan() {
+		return pengajuanSuratMapper.selectAllPengajuan();
+	}
   
   	@Override
 	public PengajuanSuratModel getStatusSurat(String no_surat) {
@@ -31,3 +36,4 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		return pengajuanSuratMapper.getStatusSurat(no_surat);
 	}
 }
+

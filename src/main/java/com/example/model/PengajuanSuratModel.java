@@ -27,4 +27,8 @@ public class PengajuanSuratModel {
 	private UserAccountModel accountPegawai;
 	private StatusSuratModel statusSurat;
 	
+	public String getUsernamePengaju() {
+		return username_pengaju;
+	}
+	
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head">
+</head>
+
+<body>
+
+	<header id="header2" th:replace="fragments/fragment2 :: header2">
+	</header>
+
+	<section id="heroV2">
+    <div class="hero-container">
+      <div class="row justify-content-md-center">
+      <div class="col-md-10">
+      		<h2>Daftar Surat</h2>
+      		        <div class="container" style="margin-left:120px;margin-right:120px;">
+			<table id="student-table" class="stripe" style="width:100%">
+	        <thead>
+	            <tr>
+	                <th>No.</th>
+	                <th>No.Surat</th>
+	                <th>Jenis Surat</th>
+	                <th>Nama</th>
+	                <th>NPM</th>
+	                <th>Tanggal Permohonan</th>
+	                <th>Nama admin</th>
+	                <th>Status Surat</th>
+	                <th>Action</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	<tr th:each="item, iterationStatus: ${letter}" th:class="${iterationStatus.odd}?'odd'">
+        			<td th:text="${iterationStatus.count}"></td>
+	        		<td th:text="${item.no_surat}"></td>
+        		<td th:text="${item.jenis_surat.nama}"></td>
+        		<td th:text="${item.accountMahasiswa.mhs.nama}"></td>
+	        		 <td th:text="${item.accountMahasiswa.mhs.npm}"></td>
+	        		<td th:text="${item.tgl_mohon}"></td>
+	        		<td th:text="${item.accountMahasiswa.mhs.nama}"></td> 
+	        		<td th:text="${item.statusSurat.nama}"></td> 
+<!-- 	        		<td> -->
+<!-- 	        			<a th:href="'/student/delete/' + ${student.npm}" >Detail</a> -->
+<!-- 	        		</td> -->
+	        	</tr>
+	        </tbody>
+	    </table>
+    </div>
+      	</div>
+      </div>
+    </div>
+  </section>
+	
+	<footer id="footer" th:replace="fragments/fragment :: footer">
+	</footer>
+</body>
+<script th:inline="javascript">
+$(document).ready(function() {
+	$('#student-table').DataTable();
+} );
+</script>
+</html>
+
+
