@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import com.example.model.PengajuanSuratModel;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.One;
@@ -12,11 +13,8 @@ import org.apache.ibatis.annotations.One;
 import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.PegawaiModel;
-import com.example.model.PengajuanSuratModel;
 import com.example.model.StatusSuratModel;
 import com.example.model.UserAccountModel;
-
-import com.example.model.PengajuanSuratModel;
 
 @Mapper
 public interface PengajuanSuratMapper {
@@ -103,4 +101,7 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuan ();
+}
+    @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
+	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
 }
