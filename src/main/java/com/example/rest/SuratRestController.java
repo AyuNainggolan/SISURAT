@@ -1,5 +1,10 @@
 package com.example.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +36,24 @@ public class SuratRestController {
 	private RestTemplate restTemplate;
 	
 	@RequestMapping("/surat/view/{no_surat}")
-	public ApiSuratModel view (@PathVariable(value="no_surat") String no_surat) {
+	public HashMap<String, Object> view (@PathVariable(value="no_surat") String no_surat) {
 		PengajuanSuratModel surat = pengajuanSuratService.getStatusSurat(no_surat);
-		StatusSuratModel status = statusSuratService.selectStatusSurat(surat.getId_status_surat());
-		JenisSuratModel jenis = jenisSuratService.selectJenisSurat(surat.getId_jenis_surat());
-		MahasiswaModel mahasiswa = restTemplate.getForObject("https://apap-fasilkom.herokuapp.com/api/mahasiswa/view/id/3", MahasiswaModel.class);
-		return new ApiSuratModel(mahasiswa.getId(), jenis.getNama(), surat.getKeterangan(), status.getNama());
+		if(surat != null) {
+			StatusSuratModel status = statusSuratService.selectStatusSurat(surat.getId_status_surat());
+			JenisSuratModel jenis = jenisSuratService.selectJenisSurat(surat.getId_jenis_surat());
+			MahasiswaModel mahasiswa = restTemplate.getForObject("https://apap-fasilkom.herokuapp.com/api/mahasiswa/view/id/3", MahasiswaModel.class);
+			ApiSuratModel api_surat = new ApiSuratModel(mahasiswa.getId(), jenis.getNama(), surat.getKeterangan(), status.getNama());
+		
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			result.put("Status", "200");
+			result.put("Message", "Data ditemukan");
+			result.put("Data Surat", api_surat);
+			return result;
+		}else {
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			result.put("Status", "404");
+			result.put("Message", "Data tidak ditemukan");
+			return result;
+		}
 	}
 }
