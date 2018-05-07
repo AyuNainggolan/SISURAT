@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MataKuliahModel {
-	private int id_mk;
-	private String kode_mk;
-	private String nama_mk;
+	private int id;
+	private String kode_matakul;
+	private String nama_matkul;
 }

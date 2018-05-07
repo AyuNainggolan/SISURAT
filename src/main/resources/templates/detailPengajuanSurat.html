@@ -42,7 +42,7 @@
 							</tr>
 							<tr>
 								<th>Status Pengajuan Surat</th>
-								<td th:text="${status_surat}"></td>
+								<td th:text="${status_surat}"><i class="far fa-edit"></i></td>
 								<th>Keterangan</th>
 								<td th:text="${surat.keterangan}"></td>
 							</tr>
@@ -54,7 +54,7 @@
 							</tr>
 							<tr>
 								<th>Matakuliah terkait</th>
-								<td colspan="3">APAP</td>
+								<td colspan="3" th:text="${nama_matkul}"></td>
 								
 							</tr>
 

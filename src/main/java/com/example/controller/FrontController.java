@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.model.MahasiswaModel;
+import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
 import com.example.model.PengajuanSuratModel;
 import com.example.model.UserAccountModel;
 import com.example.service.JenisSuratService;
 import com.example.service.MahasiswaService;
+import com.example.service.MataKuliahService;
 import com.example.service.PegawaiService;
 import com.example.service.PengajuanSuratService;
 import com.example.service.StatusSuratService;
@@ -44,6 +46,9 @@ public class FrontController {
     
     @Autowired
     StatusSuratService statusSuratDAO;
+    
+    @Autowired
+    MataKuliahService matkulDAO;
     
 	@RequestMapping("/")
 	public String index(Model model) {
@@ -109,13 +114,14 @@ public class FrontController {
 	@RequestMapping("/pengajuan/view/{id_pengajuan_surat}")
 	public String detailPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
 		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
+		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
 		String npm = surat.getUsername_pengaju();
 		model.addAttribute("surat", surat);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", this.searchNamaPegawai(surat.getUsername_pegawai()));
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
-		
+		model.addAttribute("nama_matkul", matkul.getNama_matkul());
 		return "detailPengajuanSurat";
 	}
 

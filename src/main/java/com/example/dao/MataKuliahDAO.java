@@ -1,7 +1,8 @@
-package com.example.service;
+package com.example.dao;
 
 import com.example.model.MataKuliahModel;
 
-public interface MataKuliahService {
+public interface MataKuliahDAO {
+	
 	MataKuliahModel getMatakuliahById(int id);
 }
