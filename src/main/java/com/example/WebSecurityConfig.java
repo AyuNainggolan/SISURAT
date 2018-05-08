@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.authenticated()
 		.and()
 		.formLogin().defaultSuccessUrl("/pengajuan/riwayat")
-		.loginPage("/login").permitAll()
+		.loginPage("/login").permitAll() 
 		.and()
 		.logout().permitAll();
 	}
