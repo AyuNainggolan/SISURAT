@@ -8,4 +8,5 @@ public interface PengajuanSuratService {
 	 PengajuanSuratModel getStatusSurat(String no_surat);
 	 List<PengajuanSuratModel> selectPengajuan (String username_pengaju);
 	 PengajuanSuratModel getDetailPengajuanSurat(int id_pengajuan_surat);
+	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status);
 }

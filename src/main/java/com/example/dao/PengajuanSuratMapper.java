@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.example.model.PengajuanSuratModel;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -104,4 +106,7 @@ public interface PengajuanSuratMapper {
 
     @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
+    
+    @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
+    void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
 }

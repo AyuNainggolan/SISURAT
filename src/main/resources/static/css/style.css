@@ -1213,6 +1213,11 @@ button {
     zoom: 1;
 }
 
+.fa-edit{
+	cursor: pointer;
+	color: blue;
+}
+
 
 
 
