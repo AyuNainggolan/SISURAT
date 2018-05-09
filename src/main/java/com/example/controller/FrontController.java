@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.PegawaiModel;
 import com.example.model.PengajuanSuratModel;
@@ -117,6 +119,16 @@ public class FrontController {
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
 		
 		return "detailPengajuanSurat";
+	}
+	
+	@RequestMapping("/pengajuan/tambah")
+	public String ajukanSurat(Model model) {
+		PengajuanSuratModel pengajuanSurat = new PengajuanSuratModel();
+		List<JenisSuratModel> jenis_surat = jenisSuratDAO.getAllJenisSurat();
+		model.addAttribute("pengajuanSurat", pengajuanSurat);
+    	model.addAttribute("jenis_surats", jenis_surat);
+    	model.addAttribute("url","tambah");
+    	return "ajukanSurat";
 	}
 
 }
