@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
@@ -65,6 +66,7 @@ public class FrontController {
     @RequestMapping("/pengajuan/riwayat")
     public String viewPengajuanSurat (Model model)
     {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	log.info("Test");
     
@@ -79,11 +81,13 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "riwayatSurat";
     }
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	for(int i=0;i<lstSurat.size();i++) {
@@ -94,6 +98,7 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "viewAllPengajuanSurat";
     }
     
@@ -160,5 +165,22 @@ public class FrontController {
             return "You failed to upload " + name + " because the file was empty.";
         }
     }
-
+	
+	@RequestMapping("pengajuan/viewall/filterByJenis")
+    public String filterByJenis(Model model, @RequestParam(value = "jenis") int jenisSurat) {
+		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	String namaMahasiswa, namaPegawai;
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat, name);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	return "viewAllPengajuanSurat";
+    }
 }
