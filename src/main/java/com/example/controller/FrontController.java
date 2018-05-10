@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
@@ -65,6 +66,7 @@ public class FrontController {
     @RequestMapping("/pengajuan/riwayat")
     public String viewPengajuanSurat (Model model)
     {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	log.info("Test");
     
@@ -79,6 +81,7 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "riwayatSurat";
     }
     
@@ -161,10 +164,12 @@ public class FrontController {
         }
     }
 	
-	@RequestMapping("pengajuan/viewall/filterByJenis/{jenisSurat}")
-    public String filterByJenis(Model model, @PathVariable(value = "jenisSurat") int jenisSurat) {
+	@RequestMapping("pengajuan/viewall/filterByJenis")
+    public String filterByJenis(Model model, @RequestParam(value = "jenis") int jenisSurat) {
     	String namaMahasiswa, namaPegawai;
-    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat, name);
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
