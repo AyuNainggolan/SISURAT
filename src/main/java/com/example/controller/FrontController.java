@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.model.MahasiswaModel;
 import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
@@ -116,6 +123,7 @@ public class FrontController {
 		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
 		String npm = surat.getUsername_pengaju();
+		log.info("ini status surat "+statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
 		model.addAttribute("surat", surat);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
@@ -124,5 +132,33 @@ public class FrontController {
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
 		return "detailPengajuanSurat";
 	}
+	
+	@RequestMapping("/pengajuan/ubah/{id_pengajuan_surat}/{id_status}")
+	public String updateStatusSurat(Model model, 
+			@PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat, 
+			@PathVariable(value = "id_status") int id_status) {
+		
+		pengajuanSuratDAO.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+		return this.detailPengajuanSurat(model, 1);
+	}
+	
+	@RequestMapping(value="/pengajuan/upload", method=RequestMethod.POST)
+    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
+		String name = "C:\\Users\\Bukalapak\\Documents\\PROJECT\\SISURAT";
+				
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "uploaded")));
+                stream.write(bytes);
+                stream.close();
+                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
+            } catch (Exception e) {
+                return "You failed to upload " + name + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + name + " because the file was empty.";
+        }
+    }
 
 }
