@@ -87,6 +87,7 @@ public class FrontController {
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	for(int i=0;i<lstSurat.size();i++) {
@@ -97,6 +98,7 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "viewAllPengajuanSurat";
     }
     
@@ -166,6 +168,7 @@ public class FrontController {
 	
 	@RequestMapping("pengajuan/viewall/filterByJenis")
     public String filterByJenis(Model model, @RequestParam(value = "jenis") int jenisSurat) {
+		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
@@ -177,6 +180,7 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "viewAllPengajuanSurat";
     }
 }
