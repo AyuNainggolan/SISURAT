@@ -160,5 +160,18 @@ public class FrontController {
             return "You failed to upload " + name + " because the file was empty.";
         }
     }
-
+	
+	@RequestMapping("pengajuan/viewall/filterByJenis/{jenisSurat}")
+    public String filterByJenis(Model model, @PathVariable(value = "jenisSurat") int jenisSurat) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	return "viewAllPengajuanSurat";
+    }
 }
