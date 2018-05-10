@@ -101,7 +101,36 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuan ();
-
+    
+    
+    @Select("select * from pengajuan_surat where tgl_mohon between #{startDate} and #{endDate}")
+    @Results(value= {
+    @Result (property="no_surat", column="no_surat"),
+    @Result(property="tgl_mohon", column="tgl_mohon"),
+    @Result(property="id_jenis_surat", column="id_jenis_surat"),
+    @Result(property="jenis_surat", column="id_jenis_surat", one= @One(select="selectJenisSurat")),
+    @Result(property="username_pengaju", column="username_pengaju"),
+    @Result(property="accountMahasiswa", column="username_pengaju", one=@One(select="selectUserAccountMhs")),
+    @Result(property="username_pegawai", column="username_pegawai"),
+    @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
+    @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
+    List<PengajuanSuratModel> selectPengajuanByDate (@Param("startDate") String startDate, @Param("endDate") String endDate);
+    
     @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
+    
+    @Select("select * from pengajuan_surat where id_status_surat = #{status}")
+    @Results(value= {
+    @Result (property="no_surat", column="no_surat"),
+    @Result(property="tgl_mohon", column="tgl_mohon"),
+    @Result(property="id_jenis_surat", column="id_jenis_surat"),
+    @Result(property="jenis_surat", column="id_jenis_surat", one= @One(select="selectJenisSurat")),
+    @Result(property="username_pengaju", column="username_pengaju"),
+    @Result(property="accountMahasiswa", column="username_pengaju", one=@One(select="selectUserAccountMhs")),
+    @Result(property="username_pegawai", column="username_pegawai"),
+    @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
+    @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
+    List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
 }

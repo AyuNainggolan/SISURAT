@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head">
+</head>
+
+<body>
+
+	<header id="header2" th:replace="fragments/fragment2 :: header2">
+	</header>
+
+	<section id="heroV2">
+	
+    <div class="hero-container">
+      <div class="row justify-content-md-center">
+      
+      <div class="col-md-4">
+      	
+      		<div class="row clearfix" id="services">
+                    <div class="col-md-8" data-wow-delay="0.8s">
+                        <div class="box" style="height: 100%">
+                            <div class="icon"><a href=""><i class="fa fa-user"></i></a></div>
+                            <h4 class="title"><a href="">Ayu Musfita</a></h4>
+                           
+                               
+                                <div class="col-md-12 columns">
+                                    <p style="font-weight: bold; margin-bottom: 0;">5</p>
+                                    <p style="font-size: 12px;">Surat yang sedang diproses</p>
+                                </div>
+                           		<hr />
+                           		<div class="col-md-12 columns">
+                                    <p style="font-weight: bold; margin-bottom: 0;">15</p>
+                                    <p style="font-size: 12px;">Surat yang sudah selesai</p>
+                                </div>
+                           		<hr />
+								<div class="col-md-12 columns">
+                                  	<p style="font-weight: bold; color:red; margin-bottom: 0;">PENGUMUMAN</p>
+                                    <p style="font-size: 12px;font-weight: bold;">Pengajuan surat akan diselesaikan dalam 3-5 hari kerja.</p>
+                                </div>
+                        </div>
+                    </div>
+      		
+      	
+     		</div>
+      </div>
+      
+      <div class="col-md-8">
+      	
+      		<h2>Lihat Detail Pengajuan Surat </h2>
+      		
+      		<table class="table table-bordered">
+                  <tbody class="text-left">
+						<tr>
+							<td><b>ID Surat</b></td>
+							<td th:text="${surat.id}"></td>
+						</tr>
+						<tr>
+							<td><b>No Surat</b></td>
+							<td th:text="${surat.no_surat}"></td>
+						</tr>
+						<tr>
+							<td><b>User Name Pengaju</b></td>
+							<td th:text="${surat.username_pengaju}"></td>
+						</tr>
+						<tr>
+							<td><b>Tanggal Mohon</b></td>
+							<td th:text="${surat.tgl_mohon}"></td>
+						</tr>
+						<tr>
+							<td><b>Keterangan</b></td>
+							<td th:text="${surat.keterangan}"></td>
+						</tr>
+						<tr>
+							<td><b>Alasan Izin</b></td>
+							<td th:text="${surat.alasan_izin}"></td>
+						</tr>
+						<tr>
+							<td><b>Tanggal Mulai Izin</b></td>
+							<td th:text="${surat.tgl_mulai_izin}"></td>
+						</tr>
+						<tr>
+							<td><b>Tanggal Selesai Izin</b></td>
+							<td th:text="${surat.tgl_sls_izin}"></td>
+						</tr>
+						
+                  </tbody>
+            </table>
+      		
+      		
+      	</div>
+      </div>
+    </div>
+   
+    
+  </section>
+	
+	<footer id="footer" th:replace="fragments/fragment :: footer">
+	</footer>
+</body>
+</html>

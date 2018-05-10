@@ -9,50 +9,82 @@
 	</header>
 
 	<section id="heroV2">
-    <div class="hero-container">
-      <div class="row justify-content-md-center">
-      <div class="col-md-10">
-      		<h2>Daftar Surat</h2>
-      		        <div class="container" style="margin-left:120px;margin-right:120px;">
-			<table id="student-table" class="stripe" style="width:100%">
-	        <thead>
-	            <tr>
-	                <th>No.</th>
-	                <th>No.Surat</th>
-	                <th>Jenis Surat</th>
-	                <th>Nama Mahasiswa</th>
-	            	<th>NPM</th> 
-	                <th>Tanggal Permohonan</th>
-	                <th>Nama admin</th>
-	                <th>Status Surat</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	        	<tr th:each="item, iterationStatus: ${lstSurat}" th:class="${iterationStatus.odd}?'odd'">
-        			<td th:text="${iterationStatus.count}"></td>
-	        		<td th:text="${item.no_surat}"></td>
-        			<td th:text="${item.jenis_surat.nama}"></td>
-        			<td th:text="${item.username_pengaju}"></td>
-        			<td th:text="${item.accountMahasiswa.username}"></td>
-	        		<td th:text="${item.tgl_mohon}"></td>
-	        	  	<td th:text="${item.username_pegawai}"></td>
-	        		<td th:text="${item.statusSurat.nama}"></td> 
-	        	</tr>
-	        </tbody>
-	    </table>
-    </div>
-      	</div>
-      </div>
-    </div>
-  </section>
-	
+		<div class="hero-container">
+			<div class="row justify-content-md-center">
+				<div th:replace="fragments/fragment2 :: left-info"></div>
+				<div class="col-md-8">
+					<h4>Daftar Surat</h4>
+					<form action="/pengajuan/viewall/filterByDate/" method="post">
+						<input type="text" name="daterange" placeholder="Select the date" style="margin-bottom:20px;" />
+						<input type="hidden" id="tanggalAwal" name="tanggalAwal" value=""> </input>
+						<input type="hidden" id="tanggalAkhir" name="tanggalAkhir" value=""> </input>
+						<button type="submit" class="btn" id="filter_by_date" name="filter_by_date">Filter By Date</button>
+					</form>
+					<div class="container">
+						<table id="student-table" class="stripe table-hover order-column"
+							style="width: 100%">
+							<thead>
+								<tr>
+									<th>No.</th>
+									<th>No.Surat</th>
+									<th>Jenis Surat</th>
+									<th>Nama Mahasiswa</th>
+									<th>NPM</th>
+									<th>Tanggal Permohonan</th>
+									<th>Nama admin</th>
+									<th>Status Surat</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item, iterationStatus: ${lstSurat}"
+									th:class="${iterationStatus.odd}?'odd'">
+									<td th:text="${iterationStatus.count}"></td>
+									<td th:text="${item.no_surat}"></td>
+									<td th:text="${item.jenis_surat.nama}"></td>
+									<td th:text="${item.username_pengaju}"></td>
+									<td th:text="${item.accountMahasiswa.username}"></td>
+									<td th:text="${item.tgl_mohon}"></td>
+									<td th:text="${item.username_pegawai}"></td>
+									<td th:text="${item.statusSurat.nama}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<footer id="footer" th:replace="fragments/fragment :: footer">
 	</footer>
 </body>
 <script th:inline="javascript">
-$(document).ready(function() {
-	$('#student-table').DataTable();
-} );
+	$(document).ready(function() {
+		$('#student-table').DataTable();
+	}); 
+	
+	$(function() {
+		  $('input[name="daterange"]').daterangepicker({
+		    opens: 'left',
+		    autoUpdateInput: false
+		  }, function(start, end, label) {
+		    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+		  });
+		  
+		  $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+		      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+		      $("#tanggalAwal").val(picker.startDate.format('YYYY-MM-DD'));
+		      $("#tanggalAkhir").val(picker.endDate.format('YYYY-MM-DD'));
+		  });
+
+		  $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+		      $(this).val('');
+		  });
+	});
+	
+	function filterByDate(){
+		window.location.assign("http://localhost:8080/pengajuan/viewall/filterByDate/2018-05-01/2018-05-03");
+	}
 </script>
 </html>
 

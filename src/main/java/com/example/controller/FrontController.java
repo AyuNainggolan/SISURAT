@@ -90,6 +90,36 @@ public class FrontController {
     	return "viewAllPengajuanSurat";
     }
     
+    @RequestMapping("/pengajuan/viewall/filterByDate/{tanggalAwal}/{tanggalAkhir}")
+    public String filterByDate(Model model, @PathVariable(value = "tanggalAwal") String tanggalAwal, @PathVariable(value="tanggalAkhir") String tanggalAkhir) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDate(tanggalAwal, tanggalAkhir);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	}
+    	model.addAttribute("lstSurat", lstSurat);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall/filterByStatus/{status}")
+    public String filterByStatus(Model model, @PathVariable(value = "status") String status) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	return "viewAllPengajuanSurat";
+    }
+    
     public String searchName(String npm) {
     	MahasiswaModel lstMahasiswa = studentDAO.selectMahasiswaByNPM(npm);
     	return lstMahasiswa.getNama();
