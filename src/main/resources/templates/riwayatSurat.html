@@ -41,9 +41,9 @@
 									<td th:text="${item.tgl_mohon}"></td>
 									<td th:text="${item.username_pegawai}"></td>
 									<td th:text="${item.statusSurat.nama}"></td>
-									<!-- 	        		<td> -->
-									<!-- 	        			<a th:href="'/student/delete/' + ${student.npm}" >Detail</a> -->
-									<!-- 	        		</td> -->
+									<td>
+ 	        							<a style="color: blue" th:href="'/pengajuan/riwayat/' + ${item.id}" > Detail Data</a>
+        							</td>
 								</tr>
 							</tbody>
 						</table>
