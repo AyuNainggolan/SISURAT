@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head">
+</head>
+
+<body>
+
+	<header id="header2" th:replace="fragments/fragment2 :: header2">
+	</header>
+
+<section id="heroV2">
+    <div class="hero-container">
+      <div class="row justify-content-md-center">
+      <div th:replace="fragments/fragment2 :: left-info"></div>
+      <div class="col-md-8">
+		<h4>Detail Surat</h4>
+      <div class="container">
+      		<table class="table table-bordered">
+                  <tbody class="text-left">
+						<tr>
+							<td ><b>Nama Mahasiswa</b></td>
+							<td th:text="${nama}"></td>
+						</tr>
+						<tr>
+							<td><b>NPM Mahasiswa</b></td>
+							<td th:text="${letter1.username_pengaju}"></td>
+						</tr>
+						<tr>
+							<td><b>No.Surat</b></td>
+							<td th:text="${letter1.no_surat}"></td>
+						</tr>
+						<tr>
+							<td><b>Jenis Surat</b></td>
+							<td th:text="${jenis_surat}"></td>
+						</tr>
+						<tr>
+							<td><b>Tanggal Permohonan Surat</b></td>
+							<td th:text="${letter1.tgl_mohon}"></td>
+						</tr>
+						<tr>
+							<td><b>Nama Admin</b></td>
+							<td th:text="${nama_admin}"></td>
+						</tr>
+						<tr>
+							<td><b>Status Pengajuan Surat</b></td>
+							<td th:text="${status_surat}"></td>
+						</tr>
+						<tr>
+							<td><b>Keterangan</b></td>
+							<td th:text="${letter1.keterangan}"></td>
+						</tr>
+							<tr>
+							<td><b>Alasan izin</b></td>
+							<td th:text="${letter1.alasan_izin}"></td>
+						</tr>
+							<tr>
+							<td><b>Tanggal mulai izin</b></td>
+							<td th:text="${letter1.tgl_mulai_izin}"></td>
+						</tr>
+							<tr>
+							<td><b>Tanggal selesai izin</b></td>
+							<td th:text="${letter1.tgl_sls_izin}"></td>
+						</tr>
+							<tr>
+							<td><b>Mata kuliah terkait</b></td>
+							<td th:text="${nama_matkul}"></td>
+						</tr>
+                  </tbody>
+            </table>
+      	</div>
+      	</div>
+      </div>
+    </div>
+  </section>
+	
+	<footer id="footer" th:replace="fragments/fragment :: footer">
+	</footer>
+</body>
+<script th:inline="javascript">
+$(document).ready(function() {
+	$('#student-table').DataTable();
+} );
+</script>
+</html>
+
+
