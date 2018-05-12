@@ -19,4 +19,8 @@ public interface PengajuanSuratService {
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name);
 
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (int id_jenis_surat, String name);
+	 void addPengajuanSurat (PengajuanSuratModel pengajuanSuratModel);
+	 String selectNo_surat();
+	 int getCountProcessedSurat(int npm);
+	 int getCountFinishedSurat(int npm);
 }

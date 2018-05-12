@@ -8,4 +8,6 @@ public interface MahasiswaDAO {
 	List<MahasiswaModel> selectAllMahasiswa();
 	
 	MahasiswaModel selectMahasiswaByNPM(String npm);
+	
+	Boolean selectMahasiswaAsdosByNPM(int id);
 }

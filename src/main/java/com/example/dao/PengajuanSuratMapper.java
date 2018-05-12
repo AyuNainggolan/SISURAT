@@ -2,6 +2,7 @@ package com.example.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -185,7 +186,6 @@ public interface PengajuanSuratMapper {
   
     @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
     void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
-
     @Select("select * from pengajuan_surat where id_status_surat = #{status}")
     @Results(value= {
     @Result (property="no_surat", column="no_surat"),
@@ -199,6 +199,7 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
+<<<<<<< HEAD
 
 @Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat}")
 @Results(value= {
@@ -213,4 +214,22 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
+=======
+}
+    
+    @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
+    		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "
+    		+ "#{id_matkul_terkait}, #{id_status_surat})")
+    void addPengajuanSurat (PengajuanSuratModel pengajuanSuratModel);
+    
+    @Select("SELECT no_surat FROM pengajuan_surat ORDER BY ID DESC LIMIT 1")
+    String selectNo_surat();
+    
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (1, 3) AND username_pengaju = #{npm}")
+    int getCountProcessedSurat(@Param("npm") int npm);
+    
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
+    int getCountFinishedSurat(@Param("npm") int npm);
+
+>>>>>>> b1dfa4b871c7766eb707f0807b6dd19f29f820c7
 }

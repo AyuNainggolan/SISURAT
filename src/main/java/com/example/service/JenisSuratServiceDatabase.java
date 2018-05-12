@@ -31,5 +31,10 @@ public class JenisSuratServiceDatabase implements JenisSuratService {
 	@Override
 	public List<JenisSuratModel> selectAllJenisSurat(){
 		return jenisSuratMapper.selectAllJenisSurat();
+
+	@Override
+	public List<JenisSuratModel> getAllJenisSurat() {
+		log.info("select * from jenis surat");
+		return jenisSuratMapper.getAllJenisSurat();
 	}
 }

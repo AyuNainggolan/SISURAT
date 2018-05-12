@@ -49,6 +49,32 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
   		log.info("select * from pengajuan_surat where tgl_mohon between "+startDate+" and "+endDate);
   		return pengajuanSuratMapper.selectPengajuanByDateMahasiswa(startDate, endDate, name);
   	}
+
+	@Override
+	public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
+		
+		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+	}
+
+	@Override
+	public String selectNo_surat() {
+		return pengajuanSuratMapper.selectNo_surat();
+	}
+
+	@Override
+	public void addPengajuanSurat(PengajuanSuratModel pengajuanSuratModel) {
+		pengajuanSuratMapper.addPengajuanSurat(pengajuanSuratModel);
+	}
+  	
+	@Override
+	public int getCountProcessedSurat(int npm) {
+		return pengajuanSuratMapper.getCountProcessedSurat(npm);
+	}
+	
+	@Override
+	public int getCountFinishedSurat(int npm) {
+		return pengajuanSuratMapper.getCountFinishedSurat(npm);
+	}
   	
   	@Override
   	public List<PengajuanSuratModel> selectPengajuanByStatus (String status){
