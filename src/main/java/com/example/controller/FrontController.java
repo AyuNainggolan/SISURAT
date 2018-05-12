@@ -98,6 +98,8 @@ public class FrontController {
     		letter.get(i).setUsername_pengaju(namaMahasiswa);
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	model.addAttribute("letter", letter);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("lstStatus", lstStatus);
@@ -146,7 +148,8 @@ public class FrontController {
     	model.addAttribute("letter", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
-
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "riwayatSurat";
     }
     
@@ -206,6 +209,8 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDate(tanggalAwal, tanggalAkhir);
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -216,6 +221,8 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
     
@@ -225,6 +232,8 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -236,6 +245,8 @@ public class FrontController {
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
     
@@ -445,6 +456,8 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
   

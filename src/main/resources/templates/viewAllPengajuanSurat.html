@@ -64,19 +64,19 @@
 					
 					
 					
+<!-- 					<div class="container" style="margin-top:30px;"> -->
+<!-- 					<form action="viewall/filterByJenis" method="get"> -->
+<!-- 					<div class="form-group col-5"> -->
+<!-- 						<label>Pilih Jenis Surat</label> -->
+<!-- 						<select class="custom-select" name="jenis"> -->
+<!-- 							<option th:each="jenis, i:${jenisSurat}" th:value="${jenis.id}" th:text="${jenis.nama}"></option> -->
+<!-- 						</select> -->
+<!-- 					</div> -->
+<!-- 					<button class="btn btn-primary" type="submit" role="button">Filter</button> -->
+<!-- 					</form><br/> -->
+<!-- 					</div> -->
+<!-- 					<h4>Daftar Surat</h4>	 -->
 					<div class="container" style="margin-top:30px;">
-					<form action="viewall/filterByJenis" method="get">
-					<div class="form-group col-5">
-						<label>Pilih Jenis Surat</label>
-						<select class="custom-select" name="jenis">
-							<option th:each="jenis, i:${jenisSurat}" th:value="${jenis.id}" th:text="${jenis.nama}"></option>
-						</select>
-					</div>
-					<button class="btn btn-primary" type="submit" role="button">Filter</button>
-					</form><br/>
-					
-					<h4>Daftar Surat</h4>	
-					<div class="container">
 						<table id="student-table" class="stripe table-hover order-column"
 							style="width: 100%">
 							<thead>
@@ -89,6 +89,7 @@
 									<th>Tanggal Permohonan</th>
 									<th>Nama admin</th>
 									<th>Status Surat</th>
+									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -102,6 +103,12 @@
 									<td th:text="${item.tgl_mohon}"></td>
 									<td th:text="${item.username_pegawai}"></td>
 									<td th:text="${item.statusSurat.nama}"></td>
+									<td>
+	 	        						<div>
+	 	        							<a style="color: gray" th:href="'/pengajuan/view/' + ${item.id}" class="btn"> <i class="fa fa-eye"></i></a>
+										
+										</div>
+        							</td>
 								</tr>
 							</tbody>
 						</table>
