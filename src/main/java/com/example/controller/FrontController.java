@@ -72,13 +72,51 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
-    	return "riwayatSurat";
+    	return "viewAllPengajuanSurat";
     }
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    		log.info("id status surat "+lstSurat.get(i).getJenis_surat().getId());
+    		log.info("nama status surat "+lstSurat.get(i).getJenis_surat().getNama());
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall/filterByDate/{tanggalAwal}/{tanggalAkhir}")
+    public String filterByDate(Model model, @PathVariable(value = "tanggalAwal") String tanggalAwal, @PathVariable(value="tanggalAkhir") String tanggalAkhir) {
+    	String namaMahasiswa, namaPegawai;
+    	log.info("awal "+tanggalAwal);
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDate(tanggalAwal, tanggalAkhir);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	}
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall/filterByStatus/{status}")
+    public String filterByStatus(Model model, @PathVariable(value = "status") String status) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -87,6 +125,7 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
     	return "viewAllPengajuanSurat";
     }
     
