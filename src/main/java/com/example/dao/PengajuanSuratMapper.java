@@ -2,9 +2,12 @@ package com.example.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.example.model.PengajuanSuratModel;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -104,4 +107,16 @@ public interface PengajuanSuratMapper {
 
     @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
+    
+    @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
+    void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
+    
+    @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
+    		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "
+    		+ "#{id_matkul_terkait}, #{id_status_surat})")
+    void addPengajuanSurat (PengajuanSuratModel pengajuanSuratModel);
+    
+    @Select("SELECT no_surat FROM pengajuan_surat ORDER BY ID DESC LIMIT 1")
+    String selectNo_surat();
+    
 }

@@ -35,5 +35,23 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		log.info("get status surat with no_surat: ", no_surat);
 		return pengajuanSuratMapper.getStatusSurat(no_surat);
 	}
+
+	@Override
+	public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
+		
+		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+	}
+
+	@Override
+	public String selectNo_surat() {
+		return pengajuanSuratMapper.selectNo_surat();
+	}
+
+	@Override
+	public void addPengajuanSurat(PengajuanSuratModel pengajuanSuratModel) {
+		pengajuanSuratMapper.addPengajuanSurat(pengajuanSuratModel);
+	}
+  	
+  	
 }
 
