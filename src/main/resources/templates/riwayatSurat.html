@@ -44,8 +44,12 @@
 									<!-- 	        		<td> -->
 									<!-- 	        			<a th:href="'/student/delete/' + ${student.npm}" >Detail</a> -->
 									<!-- 	        		</td> -->
-									<td>
- 	        							<a style="color: blue" th:href="'/pengajuan/riwayat/' + ${item.id}" > Detail Data</a>
+									<td width="15%;">
+	 	        						<div>
+	 	        							<a style="color: gray" th:href="'/pengajuan/riwayat/' + ${item.id}" class="btn"> <i class="fa fa-eye"></i></a>
+										
+											<a style="color: gray" th:href="'/pengajuan/download/' + ${item.id}" class="btn"> <i class="fa fa-download"></i></a>
+										</div>
         							</td>
 								</tr>
 							</tbody>
