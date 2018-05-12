@@ -14,7 +14,57 @@
 				<div th:replace="fragments/fragment2 :: left-info"></div>
 				<div class="col-md-8">
 					<h4>Daftar Surat</h4>
-					<div class="container">
+					
+					<div id="container_d">
+						<div id="left">
+<!-- 							<form action="/pengajuan/viewall/filterByJenis" method="get">  -->
+<!-- 							<div class="form-group col-5">  -->
+<!-- 								 <label>Pilih Jenis Surat</label> -->
+								<select id="jenis" name="jenis" class="form-control custom-select" style="margin-bottom:10px;width:200px;">
+									<option th:each="jenis, i:${jenisSurat}" value="${jenis.id}" th:value="${jenis.id}" th:text="${jenis.nama}"></option>
+								</select>
+								<input type="hidden" id="jenis_surat" name="jenis_surat"> </input>
+<!-- 							 </div> -->
+<!-- 							<button class="btn btn-primary" type="submit" role="button">Filter</button>  -->
+<!-- 							</form>  -->
+<!-- 						<input type="text" class="form-control" placeholder="Pilih jenis surat" style="margin-bottom:10px;width:200px;margin-left:13px;" /> -->
+						</div>
+						
+<!-- 						<div class="container" style="margin-top:40px;"> -->
+				
+						
+						<div id="center">
+							<input type="text" class="form-control" name="daterange" placeholder="Pilih tanggal surat" style="margin-bottom:10px;width:200px;margin-left:13px;" />
+							<input type="hidden" id="tanggalAwal" name="tanggalAwal"> </input>
+							<input type="hidden" id="tanggalAkhir" name="tanggalAkhir"> </input>
+						</div>
+						
+						<div id="right">
+							<select id="status_surat" class="form-control custom-select" name="status_surat" th:value="${lstStatus}" onchange="setStatus(this)" style="width:200px;">
+								<div th:each="lstStatus,iterationStatus: ${lstStatus}" th:class="${iterationStatus.odd} ? 'odd'">
+									<option id="kode_univ" name="kode_univ" value="${lstStatus.statusSurat.id}" th:text="${lstStatus.statusSurat.nama}" th:value="${lstStatus.statusSurat.id}"></option>
+								</div>
+								<input type="hidden" id="status_surat" name="status_surat"> </input>
+							</select>
+						</div>
+					</div>
+					
+					<div id="container_d">
+						<div id="left">
+							<button type="button" class="btn btn-primary" id="filter_by_date_" name="filter_by_date_" onclick="filterByJenis()" style="margin-bottom:20px;margin-left:13px;margin-top:20px">Filter By Jenis</button>
+						</div>
+						
+						<div id="center">
+							<button type="button" class="btn btn-primary" id="filter_by_date" name="filter_by_date" onclick="filterByDate()" style="margin-bottom:20px;margin-left:13px;margin-top:20px">Filter By Date</button>
+						</div>
+						
+						<div id="right">
+							<button type="button" class="btn btn-primary" id="filter_by_status" name="filter_by_status" onclick="filterByStatus()" style="margin-bottom:20px;margin-left:13px;margin-top:20px">Filter By Status</button>
+						</div>
+					</div>
+					
+					
+					<div class="container" style="margin-top:30px;">
 						<table id="student-table" class="stripe table-hover order-column"
 							style="width: 100%">
 							<thead>
@@ -64,10 +114,81 @@
 	</footer>
 </body>
 <script th:inline="javascript">
+	$(function() {
+		  $('input[name="daterange"]').daterangepicker({
+		    opens: 'left',
+		    autoUpdateInput: false
+		  }, function(start, end, label) {
+		    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+		  });
+		  
+		  $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+		      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+		      $("#tanggalAwal").val(picker.startDate.format('YYYY-MM-DD'));
+		      console.log("tanggal Awal : "+picker.startDate.format('YYYY-MM-DD'));
+		      $("#tanggalAkhir").val(picker.endDate.format('YYYY-MM-DD'));
+		      console.log("tanggal Akhir : "+picker.endDate.format('YYYY-MM-DD'));
+		  });
+
+		  $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+		      $(this).val('');
+		  });
+	});
+	
+	function filterByDate(){
+		var tanggalAwal = $('#tanggalAwal').val();
+		var tanggalAkhir = $('#tanggalAkhir').val();
+		window.location.assign("/pengajuan/riwayat/filterByDate/"+tanggalAwal+"/"+tanggalAkhir);
+	}
+	
+	function filterByStatus(selectObject){
+		var status = $('#status_surat').val();
+		window.location.assign("/pengajuan/riwayat/filterByStatus/"+status);
+	}
+	
+	function filterByJenis(selectObject){
+		var jenis = $('#jenis').val();
+		console.log("jenis : "+jenis);
+		window.location.assign("/pengajuan/riwayat/filterByJenis/"+jenis);
+	}
+	
+	function setStatus(){
+		var status = $('#status_surat').val();
+		console.log("status : "+status);
+	}
+	
 	$(document).ready(function() {
 		$('#student-table').DataTable();
-	});
+	}); 
 </script>
+<style>
+	#container_d {
+	   width:100%;
+	   /*text-align:center;*/
+	}
+	
+	#left {
+	    float:left;
+	    /*width:100px;*/
+	    width:33%;
+	    height: 20px;
+	}
+	
+	#center {
+	    display: inline-block;
+	    /*margin:0 auto;*/
+	   /* width:100px; */
+	    width:33%;
+	    height: 20px;
+	}
+	
+	#right {
+	    float:right;
+	   /* width:100px; */
+	    width:33%;
+	    height: 20px;
+	}
+</style>
 </html>
 
 
