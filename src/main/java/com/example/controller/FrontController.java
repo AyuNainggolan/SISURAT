@@ -475,9 +475,6 @@ public class FrontController {
     	model.addAttribute("lstStatus", lstStatus);
     	return "viewAllPengajuanSurat";
     }
-<<<<<<< HEAD
-}
-=======
   
 	@RequestMapping("/pengajuan/riwayat/{id_pengajuan_surat}")
 	public String detailRiwayatPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
@@ -494,4 +491,3 @@ public class FrontController {
 		return "riwayatSuratDetail";
 	}
 }
->>>>>>> b1dfa4b871c7766eb707f0807b6dd19f29f820c7
