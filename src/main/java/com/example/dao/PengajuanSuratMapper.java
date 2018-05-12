@@ -213,7 +213,6 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
-}
     
     @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
     		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "

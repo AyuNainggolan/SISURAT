@@ -42,11 +42,11 @@
 
 		<nav id="nav-menu-container" style="padding-top: 35px;">
 			<ul class="nav-menu">
-				<li th:class="${url} == 'home' ? 'menu-active': ''"><a href="/pengajuan/riwayat">Pengajuan</a></li>
-				<li th:class="${url} == 'tambah' ? 'menu-active': ''"><a
-					href="#">Daftar Surat</a></li>
-				<li th:class="${url} == 'kelulusan' ? 'menu-active': ''"><a
-					href="#">Ajukan Surat</a></li>
+				
+				<li th:class="${#httpServletRequest.requestURI} == '/pengajuan/riwayat' ? 'menu-active': ''"><a
+					href="/pengajuan/riwayat">Daftar Surat</a></li>
+				<li th:class="${#httpServletRequest.requestURI} == '/pengajuan/tambah' ? 'menu-active': ''"><a
+					href="/pengajuan/tambah">Ajukan Surat</a></li>
 				<li th:class="${url} == 'cari' ? 'menu-active': ''"><a
 					href="#">FAQ</a></li>
 				

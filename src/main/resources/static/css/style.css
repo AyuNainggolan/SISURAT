@@ -286,6 +286,7 @@ h1, h2, h3, h4, h5, h6 {
     background-position: top center;
     position: relative;
     z-index: 10;
+<<<<<<< HEAD
     max-height: 800px;
 }
 
@@ -1244,6 +1245,27 @@ button {
     padding: 12px;
     border-radius: 3px;
 }
+
+.form-group {
+	font-size: 14px;
+}
+
+select {
+	font-size: 14px;
+}
+
+.form-control {
+	font-size: 14px;
+}
+
+table {
+	font-size: 13px;
+}
+
+input[type="search"] {
+	border: 1px solid black !important;
+}
+>>>>>>> e589c0bc7eb445a6ac4ec73d131cb2a305418a4b
 
 
 
