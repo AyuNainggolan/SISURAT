@@ -174,6 +174,7 @@ public class FrontController {
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -235,7 +236,7 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
-
+    	model.addAttribute("jenisSurat", allJenisSurat);
     	return "viewAllPengajuanSurat";
     }
     
@@ -323,6 +324,7 @@ public class FrontController {
 	}
 	
 	@RequestMapping("/pengajuan/tambah/submit")
+	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, HttpServletRequest request, RedirectAttributes ra) {
 	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, Model model, HttpServletRequest request, RedirectAttributes ra) {
 		Date date = new Date();
 		String referer = request.getHeader("Referer");
@@ -449,6 +451,28 @@ public class FrontController {
     public String filterByJenis(Model model, @PathVariable(value = "jenis") int jenisSurat) {
 		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
 		List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+	@RequestMapping(value="/pengajuan/upload", method=RequestMethod.POST)
+    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
+		String name = "C:\\Users\\Bukalapak\\Documents\\PROJECT\\SISURAT";
+				
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "uploaded")));
+                stream.write(bytes);
+                stream.close();
+                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
+            } catch (Exception e) {
+                return "You failed to upload " + name + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + name + " because the file was empty.";
+        }
+    }
+	
+	@RequestMapping("pengajuan/viewall/filterByJenis")
+    public String filterByJenis(Model model, @RequestParam(value = "jenis") int jenisSurat) {
+		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username

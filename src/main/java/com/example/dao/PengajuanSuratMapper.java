@@ -199,7 +199,20 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
-}
+
+@Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat}")
+@Results(value= {
+    @Result (property="no_surat", column="no_surat"),
+    @Result(property="tgl_mohon", column="tgl_mohon"),
+    @Result(property="id_jenis_surat", column="id_jenis_surat"),
+    @Result(property="jenis_surat", column="id_jenis_surat", one= @One(select="selectJenisSurat")),
+    @Result(property="username_pengaju", column="username_pengaju"),
+    @Result(property="accountMahasiswa", column="username_pengaju", one=@One(select="selectUserAccountMhs")),
+    @Result(property="username_pegawai", column="username_pegawai"),
+    @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
+    @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
+    List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
     
     @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
     		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "
@@ -214,5 +227,4 @@ public interface PengajuanSuratMapper {
     
     @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
     int getCountFinishedSurat(@Param("npm") int npm);
-
 }
