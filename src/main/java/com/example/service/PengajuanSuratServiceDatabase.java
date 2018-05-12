@@ -61,6 +61,9 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 	public int getCountFinishedSurat(int npm) {
 		return pengajuanSuratMapper.getCountFinishedSurat(npm);
 	}
-  	
+	
+	@Override
+	public void updateStatusUpload(String id_pengajuan_surat) {
+		pengajuanSuratMapper.updateStatusUpload(id_pengajuan_surat);
+	} 	
 }
-

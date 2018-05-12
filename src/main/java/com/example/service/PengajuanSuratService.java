@@ -13,4 +13,5 @@ public interface PengajuanSuratService {
 	 String selectNo_surat();
 	 int getCountProcessedSurat(int npm);
 	 int getCountFinishedSurat(int npm);
+	 void updateStatusUpload(String id_pengajuan_surat);
 }

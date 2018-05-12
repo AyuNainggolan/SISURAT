@@ -1,15 +1,11 @@
 package com.example.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -31,13 +27,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import com.example.model.JenisSuratModel;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
@@ -54,8 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class FrontController {
-	
-    @Autowired
+	@Autowired
     MahasiswaService studentDAO;
     
     @Autowired
@@ -164,25 +156,6 @@ public class FrontController {
 		return "redirect:"+ referer;
 	}
 	
-	@RequestMapping(value="/pengajuan/upload", method=RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
-		String name = "C:\\Users\\Bukalapak\\Documents\\PROJECT\\SISURAT";
-				
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "uploaded")));
-                stream.write(bytes);
-                stream.close();
-                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-            } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name + " because the file was empty.";
-        }
-    }
-	
 	@RequestMapping("/pengajuan/tambah")
 	public String ajukanSurat(Model model) {
 		PengajuanSuratModel pengajuanSurat = new PengajuanSuratModel();
@@ -261,59 +234,60 @@ public class FrontController {
 		}
 		String rootPath = System.getProperty("user.dir");
 		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName(); //get logged in username
 		 if (file[0].isEmpty()) {
 			 String msg = "File kosong";
 	            ra.addFlashAttribute("error", msg);
 	            return "redirect:"+referer;
 	        }
-
 	        try {
 	            byte[] bytes = file[0].getBytes();
-	            Path path = Paths.get(file_location+ name + "_"+ id_surat);
+	            Path path = Paths.get(file_location+id_surat);
 	            log.info(path.toString());
 	            Files.write(path, bytes);
+	            pengajuanSuratDAO.updateStatusUpload(id_surat);
 	            String msg = "Berkas surat berhasil di unggah.";
 	            ra.addFlashAttribute("sukses", msg);
-
-	        } catch (IOException e) {
-	        	
+	        } catch (IOException e) {	        	
 	            e.printStackTrace();
 	            String msg = "Terdapat kesalahan System. Coba beberapa saat lagi!";
 	            ra.addFlashAttribute("error", msg);
-	        }
-		
+	        }	
 	        return "redirect:"+referer;
     }
 	
 	@RequestMapping(value = "/pengajuan/download/{id_pengajuan_surat}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> download(String param, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) throws IOException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String rootPath = System.getProperty("user.dir");
 		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
-		String fileName = auth.getName() + "_"+ id_pengajuan_surat+".pdf";
+		String fileName = id_pengajuan_surat+".pdf";
 		
-        String name = auth.getName(); //get logged in username
-        
-		File downloadedFile = new File(file_location + name + "_"+ id_pengajuan_surat);
-		Path path = Paths.get(downloadedFile.getAbsolutePath());
-        HttpHeaders headers = new HttpHeaders();
-        
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName);
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        System.out.println("The length of the file is : "+downloadedFile.length());
-        
-	    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-	    
-	    return ResponseEntity.ok()
-	            .headers(headers)
-	            .contentLength(downloadedFile.length())
-	            .contentType(MediaType.parseMediaType("application/octet-stream"))
-	            .body(resource);
+		try {
+			File downloadedFile = new File(file_location+id_pengajuan_surat);
+	    	Path path = Paths.get(downloadedFile.getAbsolutePath());
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName);
+	        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+	        headers.add("Pragma", "no-cache");
+	        headers.add("Expires", "0");
+	        System.out.println("The length of the file is : "+downloadedFile.length());
+	        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+	        
+			if(downloadedFile.exists()) {
+			    return ResponseEntity.ok()
+			            .headers(headers)
+			            .contentLength(downloadedFile.length())
+			            .contentType(MediaType.parseMediaType("application/octet-stream"))
+			            .body(resource);
+			}else {
+				 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				            .headers(headers)
+				            .contentLength(downloadedFile.length())
+				            .contentType(MediaType.parseMediaType("application/octet-stream"))
+				            .body(resource);
+			}  
+		}catch (IOException e){
+			return null;
+		}	
 	}
 	
 	@RequestMapping("/pengajuan/riwayat/{id_pengajuan_surat}")
