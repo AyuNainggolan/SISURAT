@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.dao.MataKuliahDAO;
 import com.example.model.MataKuliahModel;
 
-import scala.annotation.meta.setter;
 
 @Service
 @Primary
