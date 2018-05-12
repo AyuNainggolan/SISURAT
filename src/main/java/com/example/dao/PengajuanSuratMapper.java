@@ -109,4 +109,10 @@ public interface PengajuanSuratMapper {
     
     @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
     void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
+    
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (1, 3) AND username_pengaju = #{npm}")
+    int getCountProcessedSurat(@Param("npm") int npm);
+    
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
+    int getCountFinishedSurat(@Param("npm") int npm);
 }

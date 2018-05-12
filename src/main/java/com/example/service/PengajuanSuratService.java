@@ -9,4 +9,6 @@ public interface PengajuanSuratService {
 	 List<PengajuanSuratModel> selectPengajuan (String username_pengaju);
 	 PengajuanSuratModel getDetailPengajuanSurat(int id_pengajuan_surat);
 	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status);
+	 int getCountProcessedSurat(int npm);
+	 int getCountFinishedSurat(int npm);
 }
