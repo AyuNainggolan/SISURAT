@@ -17,16 +17,16 @@
 			
 					<div id="container_d">
 						<div id="left">
-						<!-- 	<form action="/pengajuan/viewall/filterByJenis" method="get">  -->
-							<!-- <div class="form-group col-5">  -->
-								<!--  <label>Pilih Jenis Surat</label> -->
+<!-- 							<form action="/pengajuan/viewall/filterByJenis" method="get">  -->
+<!-- 							<div class="form-group col-5">  -->
+<!-- 								 <label>Pilih Jenis Surat</label> -->
 								<select id="jenis" name="jenis" class="form-control custom-select" style="margin-bottom:10px;width:200px;">
 									<option th:each="jenis, i:${jenisSurat}" value="${jenis.id}" th:value="${jenis.id}" th:text="${jenis.nama}"></option>
 								</select>
 								<input type="hidden" id="jenis_surat" name="jenis_surat"> </input>
-							<!--  </div> -->
-							<!-- <button class="btn btn-primary" type="submit" role="button">Filter</button>  -->
-							<!-- </form>  -->
+<!-- 							 </div> -->
+<!-- 							<button class="btn btn-primary" type="submit" role="button">Filter</button>  -->
+<!-- 							</form>  -->
 <!-- 						<input type="text" class="form-control" placeholder="Pilih jenis surat" style="margin-bottom:10px;width:200px;margin-left:13px;" /> -->
 						</div>
 						

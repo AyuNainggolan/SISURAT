@@ -43,9 +43,21 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
   	}
   	
   	@Override
+  	public List<PengajuanSuratModel> selectPengajuanByDateMahasiswa (String startDate, String endDate, String name){
+  		log.info("select * from pengajuan_surat where tgl_mohon between "+startDate+" and "+endDate);
+  		return pengajuanSuratMapper.selectPengajuanByDateMahasiswa(startDate, endDate, name);
+  	}
+  	
+  	@Override
   	public List<PengajuanSuratModel> selectPengajuanByStatus (String status){
   		log.info("select * from pengajuan_surat where id_status_surat = "+status);
   		return pengajuanSuratMapper.selectPengajuanByStatus(status);
+  	}
+  	
+  	@Override
+  	public List<PengajuanSuratModel> selectPengajuanByStatusMahasiswa (String status, String name){
+  		log.info("select * from pengajuan_surat where id_status_surat = "+status);
+  		return pengajuanSuratMapper.selectPengajuanByStatusMahasiswa(status, name);
   	}
   	
   	@Override
@@ -64,5 +76,11 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
     public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
         log.info("Filter surat by jenis: "+id_jenis_surat);
         return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+    }
+    
+    @Override
+    public List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (int id_jenis_surat, String name){
+        log.info("Filter surat by jenis: "+id_jenis_surat);
+        return pengajuanSuratMapper.selectAllPengajuanFilterByJenisMahasiswa(id_jenis_surat, name);
     }
 }
