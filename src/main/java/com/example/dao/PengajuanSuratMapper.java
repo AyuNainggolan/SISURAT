@@ -127,7 +127,7 @@ public interface PengajuanSuratMapper {
     @Select("select * from pengajuan_surat where no_surat = #{no_surat} and id_jenis_surat = 8")
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
     
-    @Select("select * from pengajuan_surat where id_status_surat = #{status}")
+    @Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat}")
     @Results(value= {
     @Result (property="no_surat", column="no_surat"),
     @Result(property="tgl_mohon", column="tgl_mohon"),
@@ -144,7 +144,7 @@ public interface PengajuanSuratMapper {
     @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
     void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
 
-    @Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat} and username_pengaju = #{name}")
+    @Select("select * from pengajuan_surat where id_status_surat = #{status}")
     @Results(value= {
     @Result (property="no_surat", column="no_surat"),
     @Result(property="tgl_mohon", column="tgl_mohon"),

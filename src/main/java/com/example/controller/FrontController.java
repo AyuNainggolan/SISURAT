@@ -75,6 +75,7 @@ public class FrontController {
     public String viewPengajuanSurat (Model model)
     {
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	String namaMahasiswa, namaPegawai;
     	log.info("Test");
     
@@ -89,13 +90,14 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("lstStatus", lstStatus);
     	return "viewAllPengajuanSurat";
     }
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
     	String namaMahasiswa, namaPegawai;
-    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	for(int i=0;i<lstSurat.size();i++) {
@@ -135,6 +137,7 @@ public class FrontController {
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -246,8 +249,8 @@ public class FrontController {
 	            .body(resource);
 	}
 	
-	@RequestMapping("pengajuan/viewall/filterByJenis")
-    public String filterByJenis(Model model, @RequestParam(value = "jenis") int jenisSurat) {
+	@RequestMapping("pengajuan/viewall/filterByJenis/{jenis}")
+    public String filterByJenis(Model model, @PathVariable(value = "jenis") int jenisSurat) {
 		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
