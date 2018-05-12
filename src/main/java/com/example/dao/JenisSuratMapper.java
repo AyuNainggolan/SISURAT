@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
 import com.example.model.JenisSuratModel;
 
 @Mapper
@@ -16,5 +17,6 @@ public interface JenisSuratMapper {
 	String getNamaJenisSurat(@Param("id_jenis_surat") int id_jenis_surat);
 	
 	@Select("Select * from jenis_surat")
+	List<JenisSuratModel> selectAllJenisSurat();
 	List<JenisSuratModel> getAllJenisSurat();
 }

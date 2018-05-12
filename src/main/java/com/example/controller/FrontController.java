@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -38,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.model.JenisSuratModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.MataKuliahModel;
 import com.example.model.PegawaiModel;
@@ -84,11 +84,14 @@ public class FrontController {
     @RequestMapping("/pengajuan/riwayat")
     public String viewPengajuanSurat (Model model)
     {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
     	
     	List<PengajuanSuratModel> letter = pengajuanSuratDAO.selectPengajuan(name);
+    	
     	for(int i=0;i<letter.size();i++) {
     		namaMahasiswa = searchName(letter.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(letter.get(i).getUsername_pegawai());
@@ -96,6 +99,74 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	return "riwayatSurat";
+    }
+    
+    @RequestMapping("/pengajuan/riwayat/filterByDate/{tanggalAwal}/{tanggalAkhir}")
+    public String filterByDateMahasiswa(Model model, @PathVariable(value = "tanggalAwal") String tanggalAwal, @PathVariable(value="tanggalAkhir") String tanggalAkhir) {
+    	String namaMahasiswa, namaPegawai;
+    	log.info("awal "+tanggalAwal);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	log.info("user logged in"+ name);
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDateMahasiswa(tanggalAwal, tanggalAkhir, name);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	}
+    	model.addAttribute("letter", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	return "riwayatSurat";
+    }
+    
+    @RequestMapping("/pengajuan/riwayat/filterByStatus/{status}")
+    public String filterByStatusMahasiswa(Model model, @PathVariable(value = "status") String status) {
+    	String namaMahasiswa, namaPegawai;
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	log.info("user logged in"+ name);
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatusMahasiswa(status, name);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("letter", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+
+    	return "riwayatSurat";
+    }
+    
+    @RequestMapping("pengajuan/riwayat/filterByJenis/{jenis}")
+    public String filterByJenisMahasiswa(Model model, @PathVariable(value = "jenis") int jenisSurat) {
+		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+		List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	String namaMahasiswa, namaPegawai;
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenisMahasiswa(jenisSurat, name);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
     	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "riwayatSurat";
@@ -105,6 +176,55 @@ public class FrontController {
     public String viewAllPengajuanSurat(Model model) {
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    		log.info("id status surat "+lstSurat.get(i).getJenis_surat().getId());
+    		log.info("nama status surat "+lstSurat.get(i).getJenis_surat().getNama());
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
+    	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall/filterByDate/{tanggalAwal}/{tanggalAkhir}")
+    public String filterByDate(Model model, @PathVariable(value = "tanggalAwal") String tanggalAwal, @PathVariable(value="tanggalAkhir") String tanggalAkhir) {
+    	String namaMahasiswa, namaPegawai;
+    	log.info("awal "+tanggalAwal);
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDate(tanggalAwal, tanggalAkhir);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		System.out.println("nama pegawai "+namaPegawai);
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	}
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	return "viewAllPengajuanSurat";
+    }
+    
+    @RequestMapping("/pengajuan/viewall/filterByStatus/{status}")
+    public String filterByStatus(Model model, @PathVariable(value = "status") String status) {
+    	String namaMahasiswa, namaPegawai;
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
+    	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -113,6 +233,9 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+
     	return "viewAllPengajuanSurat";
     }
     
@@ -188,15 +311,19 @@ public class FrontController {
 		PengajuanSuratModel pengajuanSurat = new PengajuanSuratModel();
 		List<JenisSuratModel> jenisSurat = jenisSuratDAO.getAllJenisSurat();
 		List<MataKuliahModel> mata_kuliah = matkulDAO.getAllMatakuliah();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
 		model.addAttribute("pengajuanSurat", pengajuanSurat);
     	model.addAttribute("jenis_surats", jenisSurat);
     	model.addAttribute("mata_kuliah", mata_kuliah);
     	model.addAttribute("url","tambah");
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "ajukanSurat";
 	}
 	
 	@RequestMapping("/pengajuan/tambah/submit")
-	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, HttpServletRequest request, RedirectAttributes ra, Model model) {
+	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, Model model, HttpServletRequest request, RedirectAttributes ra) {
 		Date date = new Date();
 		String referer = request.getHeader("Referer");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -209,6 +336,8 @@ public class FrontController {
 		pengajuanSurat.setUsername_pengaju(name);
 		pengajuanSurat.setTgl_mohon(date);
 		pengajuanSurat.setId_status_surat(1);
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
 		if(pengajuanSurat.getId_jenis_surat() == 3) {
 			if(studentDAO.selectMahasiswaAsdosByNPM(idMhs) == true) {
 				pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
@@ -321,11 +450,34 @@ public class FrontController {
 	            .body(resource);
 	}
 	
+	@RequestMapping("pengajuan/viewall/filterByJenis/{jenis}")
+    public String filterByJenis(Model model, @PathVariable(value = "jenis") int jenisSurat) {
+		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+		List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+    	String namaMahasiswa, namaPegawai;
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat, name);
+    	for(int i=0;i<lstSurat.size();i++) {
+    		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
+    		lstSurat.get(i).setUsername_pegawai(namaPegawai);
+    	} 
+    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("lstStatus", lstStatus);
+    	return "viewAllPengajuanSurat";
+    }
+  
 	@RequestMapping("/pengajuan/riwayat/{id_pengajuan_surat}")
 	public String detailRiwayatPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
 		PengajuanSuratModel letter1 = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(letter1.getId_matkul_terkait());
 		String npm = letter1.getUsername_pengaju();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName(); //get logged in username
+		
 		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("letter1", letter1);
 		model.addAttribute("nama", this.searchName(npm));
@@ -333,6 +485,8 @@ public class FrontController {
 		model.addAttribute("nama_admin", this.searchNamaPegawai(letter1.getUsername_pegawai()));
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
 		return "riwayatSuratDetail";
 	}
 }
