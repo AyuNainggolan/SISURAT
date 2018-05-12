@@ -105,6 +105,8 @@ public class FrontController {
     public String viewAllPengajuanSurat(Model model) {
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -113,6 +115,8 @@ public class FrontController {
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
     
@@ -188,15 +192,19 @@ public class FrontController {
 		PengajuanSuratModel pengajuanSurat = new PengajuanSuratModel();
 		List<JenisSuratModel> jenisSurat = jenisSuratDAO.getAllJenisSurat();
 		List<MataKuliahModel> mata_kuliah = matkulDAO.getAllMatakuliah();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
 		model.addAttribute("pengajuanSurat", pengajuanSurat);
     	model.addAttribute("jenis_surats", jenisSurat);
     	model.addAttribute("mata_kuliah", mata_kuliah);
     	model.addAttribute("url","tambah");
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "ajukanSurat";
 	}
 	
 	@RequestMapping("/pengajuan/tambah/submit")
-	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, HttpServletRequest request, RedirectAttributes ra) {
+	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, Model model, HttpServletRequest request, RedirectAttributes ra) {
 		Date date = new Date();
 		String referer = request.getHeader("Referer");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -220,6 +228,8 @@ public class FrontController {
 		}else {
 			pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
 		}
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
         return "listSurat";
 	}
 	
@@ -321,6 +331,9 @@ public class FrontController {
 		PengajuanSuratModel letter1 = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(letter1.getId_matkul_terkait());
 		String npm = letter1.getUsername_pengaju();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName(); //get logged in username
+		
 		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("letter1", letter1);
 		model.addAttribute("nama", this.searchName(npm));
@@ -328,6 +341,8 @@ public class FrontController {
 		model.addAttribute("nama_admin", this.searchNamaPegawai(letter1.getUsername_pegawai()));
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
 		return "riwayatSuratDetail";
 	}
 }

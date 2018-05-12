@@ -286,7 +286,7 @@ h1, h2, h3, h4, h5, h6 {
     background-position: top center;
     position: relative;
     z-index: 10;
-    max-height: 800px;
+/*     max-height: 800px; */
 }
 
 #heroV2 .hero-container {
@@ -1243,6 +1243,26 @@ button {
     margin: 10px 0;
     padding: 12px;
     border-radius: 3px;
+}
+
+.form-group {
+	font-size: 14px;
+}
+
+select {
+	font-size: 14px;
+}
+
+.form-control {
+	font-size: 14px;
+}
+
+table {
+	font-size: 13px;
+}
+
+input[type="search"] {
+	border: 1px solid black !important;
 }
 
 
