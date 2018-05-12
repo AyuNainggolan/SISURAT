@@ -170,7 +170,8 @@ public class FrontController {
             ra.addFlashAttribute("error", msg);
             return "redirect:"+referer;
 		}
-		
+		String rootPath = System.getProperty("user.dir");
+		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
@@ -182,7 +183,8 @@ public class FrontController {
 
 	        try {
 	            byte[] bytes = file[0].getBytes();
-	            Path path = Paths.get(context.getRealPath("uploads") +"_"+ auth.getName() + "_"+ id_surat);
+	            Path path = Paths.get(file_location+ name + "_"+ id_surat);
+	            log.info(path.toString());
 	            Files.write(path, bytes);
 	            String msg = "Berkas surat berhasil di unggah.";
 	            ra.addFlashAttribute("sukses", msg);
@@ -200,9 +202,13 @@ public class FrontController {
 	@RequestMapping(value = "/pengajuan/download/{id_pengajuan_surat}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> download(String param, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String rootPath = System.getProperty("user.dir");
+		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
 		String fileName = auth.getName() + "_"+ id_pengajuan_surat+".pdf";
-	
-		File downloadedFile = new File("D:\\"+fileName);
+		
+        String name = auth.getName(); //get logged in username
+        
+		File downloadedFile = new File(file_location + name + "_"+ id_pengajuan_surat);
 		Path path = Paths.get(downloadedFile.getAbsolutePath());
         HttpHeaders headers = new HttpHeaders();
         
