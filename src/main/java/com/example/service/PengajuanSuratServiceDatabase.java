@@ -35,16 +35,34 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		log.info("get status surat with no_surat: ", no_surat);
 		return pengajuanSuratMapper.getStatusSurat(no_surat);
 	}
-
-	@Override
-	public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
-		
-		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
-	}
   	
-	@Override
-  	public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
-  		log.info("Filter surat by jenis: "+id_jenis_surat);
-  		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+  	@Override
+  	public List<PengajuanSuratModel> selectPengajuanByDate (String startDate, String endDate){
+  		log.info("select * from pengajuan_surat where tgl_mohon between "+startDate+" and "+endDate);
+  		return pengajuanSuratMapper.selectPengajuanByDate(startDate, endDate);
   	}
+  	
+  	@Override
+  	public List<PengajuanSuratModel> selectPengajuanByStatus (String status){
+  		log.info("select * from pengajuan_surat where id_status_surat = "+status);
+  		return pengajuanSuratMapper.selectPengajuanByStatus(status);
+  	}
+  	
+  	@Override
+  	public List<PengajuanSuratModel> selectAllStatus (){
+  		log.info("select * from pengajuan_surat where id_status_surat = ");
+  		return pengajuanSuratMapper.selectAllStatus();
+  	}
+  
+    @Override
+    public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
+
+      pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+    }
+
+    @Override
+    public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
+        log.info("Filter surat by jenis: "+id_jenis_surat);
+        return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+    }
 }
