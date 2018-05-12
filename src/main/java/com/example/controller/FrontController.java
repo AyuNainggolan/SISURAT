@@ -201,4 +201,19 @@ public class FrontController {
 	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(resource);
 	}
+	
+	@RequestMapping("/pengajuan/riwayat/{id_pengajuan_surat}")
+	public String detailRiwayatPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
+		PengajuanSuratModel letter1 = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
+		MataKuliahModel matkul = matkulDAO.getMatakuliahById(letter1.getId_matkul_terkait());
+		String npm = letter1.getUsername_pengaju();
+		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
+		model.addAttribute("letter1", letter1);
+		model.addAttribute("nama", this.searchName(npm));
+		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(letter1.getId_jenis_surat()).getNama());
+		model.addAttribute("nama_admin", this.searchNamaPegawai(letter1.getUsername_pegawai()));
+		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
+		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		return "riwayatSuratDetail";
+	}
 }
