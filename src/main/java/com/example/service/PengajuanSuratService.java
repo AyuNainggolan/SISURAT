@@ -1,6 +1,8 @@
 package com.example.service;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.model.PengajuanSuratModel;
 
 public interface PengajuanSuratService {
@@ -15,5 +17,6 @@ public interface PengajuanSuratService {
 	 List<PengajuanSuratModel> selectAllStatus ();
 	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status);
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name);
+
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (int id_jenis_surat, String name);
 }
