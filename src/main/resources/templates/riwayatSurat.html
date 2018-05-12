@@ -14,6 +14,11 @@
 				<div th:replace="fragments/fragment2 :: left-info"></div>
 				<div class="col-md-8">
 					<h4>Daftar Surat</h4>
+					
+						<div id="sukses_msg" th:if="${sukses != null}" >
+							<label th:text="${sukses}" style="color:#4F8A10;"></label>
+						</div>
+						
 					<div class="container">
 						<table id="student-table" class="stripe table-hover order-column"
 							style="width: 100%">

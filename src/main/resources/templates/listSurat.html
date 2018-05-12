@@ -13,6 +13,11 @@
       <div class="row justify-content-md-center">
       <div class="col-md-10">
       		<h2>Cari Mahasiswa</h2>
+      		
+      		<div id="sukses_msg" th:if="${sukses != null}" >
+				<label th:text="${sukses}" style="color:#4F8A10;"></label>
+			</div>
+      		
       		<form action="/mahasiswa/cari2" method="GET">
 			  
 			  <div class="form-group row">

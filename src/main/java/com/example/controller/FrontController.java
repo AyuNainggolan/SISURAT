@@ -196,7 +196,7 @@ public class FrontController {
 	}
 	
 	@RequestMapping("/pengajuan/tambah/submit")
-	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, HttpServletRequest request, RedirectAttributes ra) {
+	public String ajukanSuratSubmit(@ModelAttribute PengajuanSuratModel pengajuanSurat, HttpServletRequest request, RedirectAttributes ra, Model model) {
 		Date date = new Date();
 		String referer = request.getHeader("Referer");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -212,6 +212,9 @@ public class FrontController {
 		if(pengajuanSurat.getId_jenis_surat() == 3) {
 			if(studentDAO.selectMahasiswaAsdosByNPM(idMhs) == true) {
 				pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
+				String msg = "Pengajuan surat Anda berhasil disimpan";
+				model.addAttribute("sukses", msg);
+				return "riwayatSurat";
 			}else {
 				String msg = "Maaf, hanya asdos yang bisa mengajukan Surat Keterangan Asisten Dosen";
 				ra.addFlashAttribute("error", msg);
@@ -219,8 +222,10 @@ public class FrontController {
 			}
 		}else {
 			pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
+			String msg = "Pengajuan surat Anda berhasil disimpan";
+			model.addAttribute("sukses", msg);
+			return "riwayatSurat";
 		}
-        return "listSurat";
 	}
 	
 	public String generateNomorSurat(String no_surat) {

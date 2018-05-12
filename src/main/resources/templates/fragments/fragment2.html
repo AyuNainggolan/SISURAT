@@ -49,11 +49,10 @@
 					href="#">Ajukan Surat</a></li>
 				<li th:class="${url} == 'cari' ? 'menu-active': ''"><a
 					href="#">FAQ</a></li>
-				
-				<li class="nav-item" th:if="${#httpServletRequest.remoteUser}!=null" style="padding-top: 10px;">
-					<i><label style="color: #fff; font-size:12px;" th:text="'Login as '+ ${#httpServletRequest.remoteUser}"></label></i>
+				<li class="nav-item" th:if="${#httpServletRequest.remoteUser}!=null">
 					<form th:action="@{/logout}" method="post">
-						<input type="submit" value="(Logout)" style="background: none; border:  none; font-size: 13px; color: #fff; cursor: pointer;" />
+						<i><label style="color: #fff; font-size:12px;" th:text="'Login as '+ ${#httpServletRequest.remoteUser}"></label></i>
+						<input type="submit" value="      (Logout)" style="background: none; border:  none; font-size: 13px; color: #fff; cursor: pointer;"/>
 					</form>
 				</li>
 
