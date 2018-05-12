@@ -47,7 +47,7 @@ public class SuratRestController {
 			HashMap<String, Object> result = new HashMap<String, Object>();
 			result.put("Status", "200");
 			result.put("Message", "Data ditemukan");
-			result.put("Data Surat", api_surat);
+			result.put("Surat", api_surat); 
 			return result;
 		}else {
 			HashMap<String, Object> result = new HashMap<String, Object>();
