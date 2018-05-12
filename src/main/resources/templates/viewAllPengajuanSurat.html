@@ -14,7 +14,7 @@
 				<div th:replace="fragments/fragment2 :: left-info"></div>
 				<div class="col-md-8">
 					<h4>Daftar Surat</h4>
-					
+			
 					<div id="container_d">
 						<div id="left">
 							<input type="text" class="form-control" placeholder="Pilih jenis surat" style="margin-bottom:10px;width:200px;margin-left:13px;" />
@@ -51,6 +51,17 @@
 					</div>
 					
 					<div class="container" style="margin-top:40px;">
+					<form action="/pengajuan/viewall/filterByJenis" method="get">
+					<div class="form-group col-5">
+						<label>Pilih Jenis Surat</label>
+						<select class="custom-select" name="jenis">
+							<option th:each="jenis, i:${jenisSurat}" th:value="${jenis.id}" th:text="${jenis.nama}"></option>
+						</select>
+					</div>
+					<button class="btn btn-primary" type="submit" role="button">Filter</button>
+					</form><br/>
+					
+					<div class="container">
 						<table id="student-table" class="stripe table-hover order-column"
 							style="width: 100%">
 							<thead>

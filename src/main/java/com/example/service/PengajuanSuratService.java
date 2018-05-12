@@ -11,4 +11,6 @@ public interface PengajuanSuratService {
 	 List<PengajuanSuratModel> selectPengajuanByDate (String startDate, String endDate);
 	 List<PengajuanSuratModel> selectPengajuanByStatus (String status);
 	 List<PengajuanSuratModel> selectAllStatus ();
+	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status);
+	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name);
 }

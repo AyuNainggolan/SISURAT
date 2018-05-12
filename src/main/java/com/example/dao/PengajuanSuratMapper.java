@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.example.model.PengajuanSuratModel;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -126,6 +128,23 @@ public interface PengajuanSuratMapper {
 	PengajuanSuratModel getStatusSurat (@Param("no_surat") String no_surat);
     
     @Select("select * from pengajuan_surat where id_status_surat = #{status}")
+    @Results(value= {
+    @Result (property="no_surat", column="no_surat"),
+    @Result(property="tgl_mohon", column="tgl_mohon"),
+    @Result(property="id_jenis_surat", column="id_jenis_surat"),
+    @Result(property="jenis_surat", column="id_jenis_surat", one= @One(select="selectJenisSurat")),
+    @Result(property="username_pengaju", column="username_pengaju"),
+    @Result(property="accountMahasiswa", column="username_pengaju", one=@One(select="selectUserAccountMhs")),
+    @Result(property="username_pegawai", column="username_pegawai"),
+    @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
+    @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
+    List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
+  
+    @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
+    void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
+
+    @Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat} and username_pengaju = #{name}")
     @Results(value= {
     @Result (property="no_surat", column="no_surat"),
     @Result(property="tgl_mohon", column="tgl_mohon"),
