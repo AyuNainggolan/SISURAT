@@ -42,6 +42,9 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
 	}
   	
-  	
+	@Override
+  	public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
+  		log.info("Filter surat by jenis: "+id_jenis_surat);
+  		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+  	}
 }
-
