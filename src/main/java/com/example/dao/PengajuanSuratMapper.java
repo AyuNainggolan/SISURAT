@@ -119,4 +119,10 @@ public interface PengajuanSuratMapper {
     @Select("SELECT no_surat FROM pengajuan_surat ORDER BY ID DESC LIMIT 1")
     String selectNo_surat();
     
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (1, 3) AND username_pengaju = #{npm}")
+    int getCountProcessedSurat(@Param("npm") int npm);
+    
+    @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
+    int getCountFinishedSurat(@Param("npm") int npm);
+
 }

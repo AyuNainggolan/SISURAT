@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.model.JenisSuratModel;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.model.MahasiswaModel;
@@ -83,11 +84,9 @@ public class FrontController {
     public String viewPengajuanSurat (Model model)
     {
     	String namaMahasiswa, namaPegawai;
-    	log.info("Test");
-    
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
-    	log.info("user logged in"+ name);
+    	
     	List<PengajuanSuratModel> letter = pengajuanSuratDAO.selectPengajuan(name);
     	for(int i=0;i<letter.size();i++) {
     		namaMahasiswa = searchName(letter.get(i).getUsername_pengaju());
@@ -96,6 +95,8 @@ public class FrontController {
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("letter", letter);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "riwayatSurat";
     }
     
@@ -140,13 +141,15 @@ public class FrontController {
 		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
 		String npm = surat.getUsername_pengaju();
-		log.info("ini status surat "+statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
+		
 		model.addAttribute("surat", surat);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", this.searchNamaPegawai(surat.getUsername_pegawai()));
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(npm)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(npm)));
 		return "detailPengajuanSurat";
 	}
 
@@ -241,38 +244,59 @@ public class FrontController {
     }
 
 	@RequestMapping(value="/pengajuan/upload", method=RequestMethod.POST, consumes = "multipart/form-data")
-    public String handleFileUpload(@RequestBody MultipartFile[] file, HttpServletRequest request){
+    public String handleFileUpload(@RequestBody MultipartFile[] file, HttpServletRequest request, RedirectAttributes ra){
 		String referer = request.getHeader("Referer");
 		String split[] = referer.split("\\/");
 		String id_surat = split[split.length-1];
+		String contentType = file[0].getContentType();
+		
+		log.info("file content type "+file[0].getContentType());
+		
+		if(!contentType.equals("application/pdf")) {
+			log.info("masuk sini");
+			String msg = "Gagal! Hanya file format PDF yang bisa di upload!";
+            ra.addFlashAttribute("error", msg);
+            return "redirect:"+referer;
+		}
+		String rootPath = System.getProperty("user.dir");
+		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
 		 if (file[0].isEmpty()) {
-	           log.info("file is empty");
+			 String msg = "File kosong";
+	            ra.addFlashAttribute("error", msg);
+	            return "redirect:"+referer;
 	        }
 
 	        try {
 	            byte[] bytes = file[0].getBytes();
-	            Path path = Paths.get(context.getRealPath("uploads") +"_"+ auth.getName() + "_"+ id_surat);
+	            Path path = Paths.get(file_location+ name + "_"+ id_surat);
+	            log.info(path.toString());
 	            Files.write(path, bytes);
-	            log.info(context.getRealPath("uploads") +"_"+ auth.getName() + "_"+ id_surat);
-	            log.info("Done Uploaded");
+	            String msg = "Berkas surat berhasil di unggah.";
+	            ra.addFlashAttribute("sukses", msg);
 
 	        } catch (IOException e) {
 	        	
 	            e.printStackTrace();
+	            String msg = "Terdapat kesalahan System. Coba beberapa saat lagi!";
+	            ra.addFlashAttribute("error", msg);
 	        }
 		
-        return "listSurat";
+	        return "redirect:"+referer;
     }
 	
 	@RequestMapping(value = "/pengajuan/download/{id_pengajuan_surat}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> download(String param, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String rootPath = System.getProperty("user.dir");
+		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
 		String fileName = auth.getName() + "_"+ id_pengajuan_surat+".pdf";
-	
-		File downloadedFile = new File("D:\\"+fileName);
+		
+        String name = auth.getName(); //get logged in username
+        
+		File downloadedFile = new File(file_location + name + "_"+ id_pengajuan_surat);
 		Path path = Paths.get(downloadedFile.getAbsolutePath());
         HttpHeaders headers = new HttpHeaders();
         

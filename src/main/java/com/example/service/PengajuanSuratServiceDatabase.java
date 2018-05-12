@@ -52,6 +52,15 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
 		pengajuanSuratMapper.addPengajuanSurat(pengajuanSuratModel);
 	}
   	
+	@Override
+	public int getCountProcessedSurat(int npm) {
+		return pengajuanSuratMapper.getCountProcessedSurat(npm);
+	}
+	
+	@Override
+	public int getCountFinishedSurat(int npm) {
+		return pengajuanSuratMapper.getCountFinishedSurat(npm);
+	}
   	
 }
 
