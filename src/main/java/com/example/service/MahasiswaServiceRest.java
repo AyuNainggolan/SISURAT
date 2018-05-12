@@ -27,7 +27,13 @@ public class MahasiswaServiceRest implements MahasiswaService {
 	
 	@Override
 	public MahasiswaModel selectMahasiswaByNPM(String npm) {
-		//log.info ("REST - select all students");
+		//log.info ("REST - select all students by NPM");
 		return mahasiswaDAO.selectMahasiswaByNPM(npm);
+	}
+	
+	@Override
+	public Boolean selectMahasiswaAsdosByNPM(int id) {
+		//log.info ("REST - select asisten dosen");
+		return mahasiswaDAO.selectMahasiswaAsdosByNPM(id);
 	}
 }

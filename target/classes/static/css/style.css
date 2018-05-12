@@ -177,7 +177,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #header2:before {
   content: "";
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -327,7 +327,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #footer:before {
   content: "";
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -362,7 +362,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero:before {
   content: "";
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -759,7 +759,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #about .about-container .icon-box .icon i {
-  color: #0a559c;
+  color: #2dc997;
   font-size: 24px;
 }
 
@@ -831,8 +831,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #services .icon a {
   display: inline-block;
-  background: #ae5c5c;
-  border: 2px solid #ae5c5c;
+  background: #2dc997;
+  border: 2px solid #2dc997;
   padding: 16px;
   border-radius: 50%;
   transition: 0.3s;
@@ -844,7 +844,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #services .box:hover .icon i {
-  color: #ae5c5c;
+  color: #2dc997;
 }
 
 #services .box:hover .icon a {
@@ -1186,38 +1186,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 button {
 	margin-left: 15px;
 }
-
-#table_custom {
-	font-size : 14px;
-}
-
-#table_custom th {
-	background-color: #E0E0E0;
-	color: black;
-}
-
-#student-table {
-	font-size: 13px;
-}
-
-#student-table th { font-size: 13px; }
-#student-table td { font-size: 12px; }
-
-.dataTables_wrapper {
-    font-family: tahoma;
-    font-size: 13px;
-/*     direction: rtl; */
-    position: relative;
-    clear: both;
-    *zoom: 1;
-    zoom: 1;
-}
-
-.fa-edit{
-	cursor: pointer;
-	color: blue;
-}
-
 
 
 

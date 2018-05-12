@@ -286,6 +286,7 @@ h1, h2, h3, h4, h5, h6 {
     background-position: top center;
     position: relative;
     z-index: 10;
+    max-height: 800px;
 }
 
 #heroV2 .hero-container {
@@ -1218,6 +1219,31 @@ button {
 	color: blue;
 }
 
+#btn-upload{
+	background-color: #bababa;
+    border: none;
+    border-radius: 3px;
+    color: black;
+    width: 76px;
+    height: 30px;
+    margin-top: 7px;
+    font-weight: bolder;
+    border: 1px solid #747474;
+}
+
+#error_msg{
+	background-color: #FFBABA;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 3px;
+}
+
+#sukses_msg{
+	background-color: #DFF2BF;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 3px;
+}
 
 
 

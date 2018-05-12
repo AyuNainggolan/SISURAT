@@ -35,69 +35,30 @@
 <header id="header2" th:fragment="header2">
 	<div sec:authorize="isAuthenticated()" class="container">
 
-		<div id="logo" style="float: left;">
-			<img style="margin-left: 4%; max-width: 180px;"
-				th:src="@{/img/logo-fasilkom-baru.png}" />
+		<div id="logo" style="float:left;">
+			<img style="margin-left:4%;max-width:180px;" th:src="@{/img/logo-fasilkom-baru.png}" />
 		</div>
 
-		<nav id="nav-menu-container" style="padding-top: 35px;">
-			<ul class="nav-menu">
-				<li th:class="${url} == 'home' ? 'menu-active': ''"><a href="/pengajuan/riwayat">Pengajuan</a></li>
-				<li th:class="${url} == 'tambah' ? 'menu-active': ''"><a
-					href="#">Daftar Surat</a></li>
-				<li th:class="${url} == 'kelulusan' ? 'menu-active': ''"><a
-					href="#">Ajukan Surat</a></li>
-				<li th:class="${url} == 'cari' ? 'menu-active': ''"><a
-					href="#">FAQ</a></li>
-				
-				<li class="nav-item" th:if="${#httpServletRequest.remoteUser}!=null" style="padding-top: 10px;">
-					<i><label style="color: #fff; font-size:12px;" th:text="'Login as '+ ${#httpServletRequest.remoteUser}"></label></i>
-					<form th:action="@{/logout}" method="post">
-						<input type="submit" value="(Logout)" style="background: none; border:  none; font-size: 13px; color: #fff; cursor: pointer;" />
-					</form>
-				</li>
+				      <nav id="nav-menu-container" style="padding-top:35px;">
+				        <ul class="nav-menu">
+				          <li th:class="${url} == 'home' ? 'menu-active': ''"><a href="/">Home</a></li>
+				          <li th:class="${url} == 'tambah' ? 'menu-active': ''"><a href="/mahasiswa/tambah">Tambah Mahasiswa</a></li>
+				          <li th:class="${url} == 'kelulusan' ? 'menu-active': ''"><a href="/kelulusan">Kelulusan Mahasiswa</a></li>
+				          <li th:class="${url} == 'cari' ? 'menu-active': ''"><a href="/mahasiswa/viewCari">Cari Mahasiswa</a></li>
+				          <li class="nav-item"  th:if="${#httpServletRequest.remoteUser}!=null">
+				          	<form  th:action="@{/logout}" method="post">
+								<input type="submit" value="Logout" />
+							</form>
+						  </li>
 
-			</ul>
-		</nav>
+				        </ul>
+				      </nav>
 
 
 
 	</div>
 </header>
-<div class="col-md-4" th:fragment="left-info">
 
-	<div class="row clearfix" id="services">
-		<div class="col-md-8" data-wow-delay="0.8s">
-			<div class="box" style="height: 90%">
-				<div class="icon">
-					<a href=""><i class="fa fa-user"></i></a>
-				</div>
-				<h4 class="title">
-					<a href="" th:text="${#httpServletRequest.remoteUser}"></a>
-				</h4>
-
-
-				<div class="col-md-12 columns">
-					<p style="font-weight: bold; margin-bottom: 0;">5</p>
-					<p style="font-size: 12px;">Surat yang sedang diproses</p>
-				</div>
-				<hr />
-				<div class="col-md-12 columns">
-					<p style="font-weight: bold; margin-bottom: 0;">15</p>
-					<p style="font-size: 12px;">Surat yang sudah selesai</p>
-				</div>
-				<hr />
-				<div class="col-md-12 columns">
-					<p style="font-weight: bold; color: red; margin-bottom: 0;">PENGUMUMAN</p>
-					<p style="font-size: 12px; font-weight: bold;">Pengajuan surat
-						akan diselesaikan dalam 3-5 hari kerja.</p>
-				</div>
-			</div>
-		</div>
-
-
-	</div>
-</div>
 
 <footer id="footer" th:fragment="footer">
 	<div class="footer-top">
