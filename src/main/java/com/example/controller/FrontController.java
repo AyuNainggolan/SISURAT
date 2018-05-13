@@ -354,17 +354,9 @@ public class FrontController {
     	String newNoSurat = "";
     	log.info("Nomor Surat "+ no_surat);
     	if (no_surat != null) {
-	    	String nomor_urut = no_surat.substring(2);
-	    	log.info("Nomor Urut "+ nomor_urut);
-	    	String new_nomor_urut = String.valueOf(Integer.parseInt(nomor_urut) + 1) ;
-	    	log.info("New Nomor Urut "+ new_nomor_urut);
-	    	if(new_nomor_urut.length()==1) {
-	    		newNoSurat = "00"+new_nomor_urut;
-	    	}else if(new_nomor_urut.length()==2) {
-	    		newNoSurat = "0"+new_nomor_urut;
-	    	}else {
-	    		newNoSurat = new_nomor_urut;
-	    	}
+	    	int nomor_urut = Integer.parseInt(no_surat);
+	    	nomor_urut = nomor_urut + 1 ;
+	    	newNoSurat = "0"+String.valueOf(nomor_urut);
     	}else {
     		newNoSurat = "001";
     	}
