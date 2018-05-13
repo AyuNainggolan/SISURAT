@@ -102,6 +102,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuan ();
     
@@ -197,6 +198,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
 
@@ -213,4 +215,7 @@ public interface PengajuanSuratMapper {
     
     @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
     int getCountFinishedSurat(@Param("npm") int npm);
+    
+    @Update("UPDATE pengajuan_surat SET status_upload = 1 WHERE id = #{id_pengajuan_surat}")
+    void updateStatusUpload(@Param("id_pengajuan_surat") String id_pengajuan_surat);
 }
