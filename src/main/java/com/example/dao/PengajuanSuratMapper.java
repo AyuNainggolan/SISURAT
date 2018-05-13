@@ -199,8 +199,7 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
-}
-    
+
     @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
     		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "
     		+ "#{id_matkul_terkait}, #{id_status_surat})")
@@ -214,5 +213,4 @@ public interface PengajuanSuratMapper {
     
     @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
     int getCountFinishedSurat(@Param("npm") int npm);
-
 }

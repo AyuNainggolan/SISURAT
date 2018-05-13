@@ -1,6 +1,8 @@
 package com.example.service;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,21 +94,15 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
   		return pengajuanSuratMapper.selectAllStatus();
   	}
   
-    @Override
-    public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
-
-      pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
-    }
-
-    @Override
-    public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
-        log.info("Filter surat by jenis: "+id_jenis_surat);
-        return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
-    }
     
     @Override
     public List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (int id_jenis_surat, String name){
         log.info("Filter surat by jenis: "+id_jenis_surat);
         return pengajuanSuratMapper.selectAllPengajuanFilterByJenisMahasiswa(id_jenis_surat, name);
     }
+    
+  	public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
+  		log.info("Filter surat by jenis: "+id_jenis_surat);
+  		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+  	}
 }

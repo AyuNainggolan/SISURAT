@@ -98,6 +98,8 @@ public class FrontController {
     		letter.get(i).setUsername_pengaju(namaMahasiswa);
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	model.addAttribute("letter", letter);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("lstStatus", lstStatus);
@@ -146,7 +148,8 @@ public class FrontController {
     	model.addAttribute("letter", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
-
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "riwayatSurat";
     }
     
@@ -174,13 +177,13 @@ public class FrontController {
     
     @RequestMapping("/pengajuan/viewall")
     public String viewAllPengajuanSurat(Model model) {
+    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	String namaMahasiswa, namaPegawai;
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuan();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
 
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
-    	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
 
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
@@ -206,6 +209,8 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByDate(tanggalAwal, tanggalAkhir);
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -216,6 +221,8 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
     
@@ -225,6 +232,8 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectPengajuanByStatus(status);
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
@@ -235,7 +244,9 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("jenisSurat", allJenisSurat);
-
+    	model.addAttribute("jenisSurat", allJenisSurat);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
     
@@ -287,24 +298,6 @@ public class FrontController {
 		return "redirect:"+ referer;
 	}
 	
-	@RequestMapping(value="/pengajuan/upload", method=RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
-		String name = "C:\\Users\\Bukalapak\\Documents\\PROJECT\\SISURAT";
-				
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "uploaded")));
-                stream.write(bytes);
-                stream.close();
-                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-            } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name + " because the file was empty.";
-        }
-    }
 	
 	@RequestMapping("/pengajuan/tambah")
 	public String ajukanSurat(Model model) {
@@ -454,6 +447,7 @@ public class FrontController {
     public String filterByJenis(Model model, @PathVariable(value = "jenis") int jenisSurat) {
 		List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
 		List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
+
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
@@ -467,6 +461,8 @@ public class FrontController {
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("lstStatus", lstStatus);
+    	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
     	return "viewAllPengajuanSurat";
     }
   

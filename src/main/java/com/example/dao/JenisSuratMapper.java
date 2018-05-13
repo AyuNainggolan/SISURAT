@@ -18,5 +18,7 @@ public interface JenisSuratMapper {
 	
 	@Select("Select * from jenis_surat")
 	List<JenisSuratModel> selectAllJenisSurat();
+	
+	@Select("Select * from jenis_surat")
 	List<JenisSuratModel> getAllJenisSurat();
 }

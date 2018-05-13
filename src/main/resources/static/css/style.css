@@ -286,7 +286,8 @@ h1, h2, h3, h4, h5, h6 {
     background-position: top center;
     position: relative;
     z-index: 10;
-/*     max-height: 800px; */
+<<<<<<< HEAD
+    max-height: 800px;
 }
 
 #heroV2 .hero-container {
@@ -1264,6 +1265,7 @@ table {
 input[type="search"] {
 	border: 1px solid black !important;
 }
+>>>>>>> e589c0bc7eb445a6ac4ec73d131cb2a305418a4b
 
 
 
