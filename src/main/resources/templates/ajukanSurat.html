@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head">
+</head>
+<body>
+<header id="header2" th:replace="fragments/fragment2 :: header2">
+</header>
+	<section id="heroV2">
+		<div class="hero-container">
+			<div class="row justify-content-md-center">
+				<div th:replace="fragments/fragment2 :: left-info"></div>
+				<div class="col-md-8">
+					<h4>Mengajukan Permohonan Surat Baru</h4>
+					
+					<div id="error_msg" th:if="${error != null}" >
+						<label th:text="${error}" style="color:D8000C;"></label>
+					</div><br></br>
+					
+					<form action="/pengajuan/tambah/submit" th:object="${pengajuanSurat}" method="post" style="width:800px">	
+						
+						<div class="form-group row">
+						    <label for="jenisSurat" class="col-sm-2 col-form-label">Jenis Surat</label>
+						    <div class="col-sm-7">
+					  		  	<select class="form-control" id="jenisSurat" name="jenisSurat" th:field="*{id_jenis_surat}">
+					  		  		<option value="0">Pilih Jenis Surat</option>
+				 					<option th:each="jenisSurat : ${jenis_surats}" th:text="${jenisSurat.nama}" th:value="${jenisSurat.id}" ></option>
+						  		</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+						    <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+						    <div class="col-sm-7">
+						   		 	<input type="text" class="form-control input-sm" name="keterangan" placeholder="e.g Melamar pekerjaan, pengajuan beasiswa X" th:field="*{keterangan}" required = "true" />
+							</div>
+						</div>	
+						
+						<div class="form-group row" id="alasan" style="display:none;">
+						    <label for="alasanIzin" class="col-sm-2 col-form-label">Alasan Izin</label>
+						    <div class="col-sm-7">
+						   		 	<input type="text" class="form-control input-sm" name="alasanIzin" placeholder="" th:field="*{alasan_izin}"  />
+							</div>
+						</div>	
+						
+						<div class="form-group row" id="tanggal" style="display:none;">
+						    <label for="tanggalIzin" class="col-sm-2 col-form-label">Tanggal Izin</label>
+						    <div class="col-sm-3">
+						   		 	<input type="date" class="form-control input-sm" name="tgl_mulai_izin" placeholder="" th:field="*{tgl_mulai_izin}" />
+						   	</div>
+						   	<p>s/d</p>
+						   	<div class="col-sm-3">
+						   		 	<input type="date" class="form-control input-sm" name="tgl_sls_izin" placeholder="" th:field="*{tgl_sls_izin}" />
+							</div>
+						</div> <br></br>
+						
+						<div class="form-group row" id="matkul" style="display:none;">
+						    <label for="mataKuliah" class="col-sm-2 col-form-label">Mata Kuliah</label>
+						    <div class="col-sm-9">
+								<table id="matkul-table" class="stripe table-hover order-column"
+									style="width: 100%">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Kode Mata Kuliah</th>
+											<th>Nama Mata Kuliah</th>
+											<th>Pilih Mata Kuliah</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="item, iterationStatus: ${mata_kuliah}"
+											th:class="${iterationStatus.odd}?'odd'">
+											<td th:text="${item.id}"></td>
+											<td th:text="${item.kode_matkul}"></td>
+											<td th:text="${item.nama_matkul}"></td>
+											<td style="text-align:center;"><input type="radio" name="id_matkul" th:value="${item.id}" th:field="*{id_matkul_terkait}" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div> <br></br>
+						
+						<div>
+							<button type="submit" class="btn btn-primary" style="float: right;">Ajukan Surat</button>
+						</div>				
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer id="footer" th:replace="fragments/fragment :: footer">
+	</footer>
+</body>
+<script th:inline="javascript">
+	$(document).ready(function() {
+		$('#matkul-table').DataTable();
+	});
+	
+	$('#jenisSurat').on('change', function() {
+		  if($("#jenisSurat").val() == 1 || $("#jenisSurat").val() == 2 ) {
+		    $('#alasan').show();
+		    $('#tanggal').show();
+		    $('#matkul').show();
+		  } else {
+			$('#alasan').hide();
+			$('#tanggal').hide();
+			$('#matkul').hide();
+		  }
+		});
+</script>
+</html>

@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.dao.JenisSuratMapper;
 import com.example.model.JenisSuratModel;
+
 import lombok.extern.slf4j.Slf4j;
-import com.example.dao.MahasiswaMapper;
 
 @Slf4j
 @Service
@@ -30,5 +31,11 @@ public class JenisSuratServiceDatabase implements JenisSuratService {
 	@Override
 	public List<JenisSuratModel> selectAllJenisSurat(){
 		return jenisSuratMapper.selectAllJenisSurat();
+	}
+	
+	@Override
+	public List<JenisSuratModel> getAllJenisSurat() {
+		log.info("select * from jenis surat");
+		return jenisSuratMapper.getAllJenisSurat();
 	}
 }

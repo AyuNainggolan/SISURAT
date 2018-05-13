@@ -34,4 +34,10 @@ public class MahasiswaDAOImpl implements MahasiswaDAO {
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
 	}
+
+	@Override
+	public Boolean selectMahasiswaAsdosByNPM(int id) {
+		Boolean isAsdos = restTemplate.getForObject("http://kelompok-a.herokuapp.com/asisten-dosen/cek-status?id="+id, Boolean.class);
+		return isAsdos;
+	}
 }
