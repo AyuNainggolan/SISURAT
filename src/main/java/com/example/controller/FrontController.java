@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -81,6 +82,14 @@ public class FrontController {
 		return "index";
 	}
 	
+	@RequestMapping("/default")
+    public String defaultAfterLogin(HttpServletRequest request) {
+        if (request.isUserInRole("MAHASISWA")) {
+            return "redirect:/pengajuan/riwayat";
+        }
+        return "redirect:/pengajuan/viewall";
+    }
+	
     @RequestMapping("/pengajuan/riwayat")
     public String viewPengajuanSurat (Model model)
     {
@@ -94,8 +103,14 @@ public class FrontController {
     	
     	for(int i=0;i<letter.size();i++) {
     		namaMahasiswa = searchName(letter.get(i).getUsername_pengaju());
-    		namaPegawai = searchNamaPegawai(letter.get(i).getUsername_pegawai());
     		letter.get(i).setUsername_pengaju(namaMahasiswa);
+    		log.info("nama ="+letter.get(i).getUsername_pegawai());
+    		if(letter.get(i).getUsername_pegawai() == null) {
+    			log.info("test");
+    			namaPegawai = "Not assigned";
+    		}else {
+    			namaPegawai = searchNamaPegawai(letter.get(i).getUsername_pegawai());
+    		}
     		letter.get(i).setUsername_pegawai(namaPegawai);
     	} 
     	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
@@ -108,7 +123,7 @@ public class FrontController {
     
     @RequestMapping("/pengajuan/riwayat/filterByDate/{tanggalAwal}/{tanggalAkhir}")
     public String filterByDateMahasiswa(Model model, @PathVariable(value = "tanggalAwal") String tanggalAwal, @PathVariable(value="tanggalAkhir") String tanggalAkhir) {
-    	String namaMahasiswa, namaPegawai;
+    	String namaMahasiswa, namaPegawai, employeeName;
     	log.info("awal "+tanggalAwal);
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
@@ -118,6 +133,13 @@ public class FrontController {
     	List<PengajuanSuratModel> lstStatus = pengajuanSuratDAO.selectAllStatus();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
@@ -140,6 +162,14 @@ public class FrontController {
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		String employeeName;
+			employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}		
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
@@ -163,6 +193,14 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenisMahasiswa(jenisSurat, name);
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		String employeeName;
+			employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
@@ -187,12 +225,16 @@ public class FrontController {
 
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		if(lstSurat.get(i).getUsername_pegawai() == null) {
+    			namaPegawai = "Not Assigned";
+    		} else {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}
+    		
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
-    		log.info("id status surat "+lstSurat.get(i).getJenis_surat().getId());
-    		log.info("nama status surat "+lstSurat.get(i).getJenis_surat().getNama());
+    		
     	} 
     	model.addAttribute("lstSurat", lstSurat);
     	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
@@ -213,6 +255,14 @@ public class FrontController {
 		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		String employeeName;
+			employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
@@ -236,6 +286,15 @@ public class FrontController {
 		String name = auth.getName();
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		String employeeName;
+			employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}
+    		
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
@@ -276,11 +335,18 @@ public class FrontController {
 		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
 		String npm = surat.getUsername_pengaju();
+		String nama_pegawai;
 		
+		if(surat.getUsername_pegawai() == null) {
+			nama_pegawai = "Not Assigned";
+		} else {
+			nama_pegawai = this.searchNamaPegawai(surat.getUsername_pegawai());
+		}
+		log.info("ini pegawai di view "+ nama_pegawai);
 		model.addAttribute("surat", surat);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
-		model.addAttribute("nama_admin", this.searchNamaPegawai(surat.getUsername_pegawai()));
+		model.addAttribute("nama_admin", nama_pegawai);
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
 		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(npm)));
@@ -293,7 +359,11 @@ public class FrontController {
 			@PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat, 
 			@PathVariable(value = "id_status") int id_status, HttpServletRequest request) {
 		
-		pengajuanSuratDAO.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		log.info("ini id status "+ id_status);
+		log.info("ini name pegawai "+ name);
+		pengajuanSuratDAO.updateStatusPengajuanSurat(id_pengajuan_surat, id_status, name);
 		String referer = request.getHeader("Referer");
 		return "redirect:"+ referer;
 	}
@@ -329,9 +399,18 @@ public class FrontController {
 		pengajuanSurat.setUsername_pengaju(name);
 		pengajuanSurat.setTgl_mohon(date);
 		pengajuanSurat.setId_status_surat(1);
+		pengajuanSurat.setStatus_upload(0);
+		
+		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
+    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
+        
+    	
 		if(pengajuanSurat.getId_jenis_surat() == 3) {
 			if(studentDAO.selectMahasiswaAsdosByNPM(idMhs) == true) {
 				pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
+				String msg = "Pengajuan surat Anda berhasil disimpan";
+				model.addAttribute("sukses", msg);
+				return "riwayatSurat";
 			}else {
 				String msg = "Maaf, hanya asdos yang bisa mengajukan Surat Keterangan Asisten Dosen";
 				ra.addFlashAttribute("error", msg);
@@ -339,27 +418,20 @@ public class FrontController {
 			}
 		}else {
 			pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
+			String msg = "Pengajuan surat Anda berhasil disimpan";
+			model.addAttribute("sukses", msg);
+			return "riwayatSurat";
 		}
-		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
-    	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
-        return "listSurat";
+		
 	}
 	
 	public String generateNomorSurat(String no_surat) {
     	String newNoSurat = "";
     	log.info("Nomor Surat "+ no_surat);
     	if (no_surat != null) {
-	    	String nomor_urut = no_surat.substring(2);
-	    	log.info("Nomor Urut "+ nomor_urut);
-	    	String new_nomor_urut = String.valueOf(Integer.parseInt(nomor_urut) + 1) ;
-	    	log.info("New Nomor Urut "+ new_nomor_urut);
-	    	if(new_nomor_urut.length()==1) {
-	    		newNoSurat = "00"+new_nomor_urut;
-	    	}else if(new_nomor_urut.length()==2) {
-	    		newNoSurat = "0"+new_nomor_urut;
-	    	}else {
-	    		newNoSurat = new_nomor_urut;
-	    	}
+	    	int nomor_urut = Integer.parseInt(no_surat);
+    		nomor_urut = nomor_urut + 1 ;
+    		newNoSurat = "0"+String.valueOf(nomor_urut);
     	}else {
     		newNoSurat = "001";
     	}
@@ -383,9 +455,7 @@ public class FrontController {
 		}
 		String rootPath = System.getProperty("user.dir");
 		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName(); //get logged in username
+	
 		 if (file[0].isEmpty()) {
 			 String msg = "File kosong";
 	            ra.addFlashAttribute("error", msg);
@@ -394,9 +464,10 @@ public class FrontController {
 
 	        try {
 	            byte[] bytes = file[0].getBytes();
-	            Path path = Paths.get(file_location+ name + "_"+ id_surat);
+	            Path path = Paths.get(file_location+  id_surat);
 	            log.info(path.toString());
 	            Files.write(path, bytes);
+	            pengajuanSuratDAO.updateStatusUpload(id_surat);
 	            String msg = "Berkas surat berhasil di unggah.";
 	            ra.addFlashAttribute("sukses", msg);
 
@@ -412,30 +483,38 @@ public class FrontController {
 	
 	@RequestMapping(value = "/pengajuan/download/{id_pengajuan_surat}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> download(String param, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) throws IOException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
 		String rootPath = System.getProperty("user.dir");
 		String file_location = rootPath + File.separator + "src"+File.separator+"main"+File.separator+"resources"+File.separator+"uploads"+File.separator;
-		String fileName = auth.getName() + "_"+ id_pengajuan_surat+".pdf";
+		String fileName = id_pengajuan_surat+".pdf";
 		
-        String name = auth.getName(); //get logged in username
-        
-		File downloadedFile = new File(file_location + name + "_"+ id_pengajuan_surat);
-		Path path = Paths.get(downloadedFile.getAbsolutePath());
-        HttpHeaders headers = new HttpHeaders();
-        
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName);
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        System.out.println("The length of the file is : "+downloadedFile.length());
-        
-	    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-	    
-	    return ResponseEntity.ok()
-	            .headers(headers)
-	            .contentLength(downloadedFile.length())
-	            .contentType(MediaType.parseMediaType("application/octet-stream"))
-	            .body(resource);
+		try {
+			File downloadedFile = new File(file_location+id_pengajuan_surat);
+	    	Path path = Paths.get(downloadedFile.getAbsolutePath());
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName);
+	        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+	        headers.add("Pragma", "no-cache");
+	        headers.add("Expires", "0");
+	        System.out.println("The length of the file is : "+downloadedFile.length());
+	        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+	        
+			if(downloadedFile.exists()) {
+			    return ResponseEntity.ok()
+			            .headers(headers)
+			            .contentLength(downloadedFile.length())
+			            .contentType(MediaType.parseMediaType("application/octet-stream"))
+			            .body(resource);
+			}else {
+				 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				            .headers(headers)
+				            .contentLength(downloadedFile.length())
+				            .contentType(MediaType.parseMediaType("application/octet-stream"))
+				            .body(resource);
+			}  
+		}catch (IOException e){
+			return null;
+		}	
 	}
 	
 	@RequestMapping("pengajuan/viewall/filterByJenis/{jenis}")
@@ -449,6 +528,15 @@ public class FrontController {
     	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat, name);
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
+    		String employeeName;
+			employeeName = lstSurat.get(i).getUsername_pegawai();
+    		
+    		if(employeeName != null) {
+    			namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		}else {
+    			namaPegawai = "Not assigned";
+    		}
+    		
     		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
@@ -468,12 +556,19 @@ public class FrontController {
 		String npm = letter1.getUsername_pengaju();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName(); //get logged in username
+		String nama_pegawai;
+		if(letter1.getUsername_pegawai() == null) {
+			
+			nama_pegawai = "Not Assigned";
+		} else {
+			nama_pegawai = this.searchNamaPegawai(letter1.getUsername_pegawai());
+		}
 		
 		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("letter1", letter1);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(letter1.getId_jenis_surat()).getNama());
-		model.addAttribute("nama_admin", this.searchNamaPegawai(letter1.getUsername_pegawai()));
+		model.addAttribute("nama_admin", nama_pegawai);
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("nama_matkul", matkul.getNama_matkul());
 		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));

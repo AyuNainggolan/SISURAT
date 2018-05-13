@@ -51,9 +51,9 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
   	}
 
 	@Override
-	public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status) {
+	public void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status, String pegawai) {
 		
-		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status);
+		pengajuanSuratMapper.updateStatusPengajuanSurat(id_pengajuan_surat, id_status, pegawai);
 	}
 
 	@Override
@@ -105,4 +105,9 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
   		log.info("Filter surat by jenis: "+id_jenis_surat);
   		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
   	}
+  	
+  	@Override
+	public void updateStatusUpload(String id_pengajuan_surat) {
+		pengajuanSuratMapper.updateStatusUpload(id_pengajuan_surat);
+	} 
 }

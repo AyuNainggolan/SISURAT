@@ -15,7 +15,7 @@ public interface PengajuanSuratService {
 	 List<PengajuanSuratModel> selectPengajuanByStatus (String status);
 	 List<PengajuanSuratModel> selectPengajuanByStatusMahasiswa (String status, String nama);
 	 List<PengajuanSuratModel> selectAllStatus ();
-	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status);
+	 void updateStatusPengajuanSurat(int id_pengajuan_surat, int id_status, String pegawai);
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name);
 
 	 List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (int id_jenis_surat, String name);
@@ -23,4 +23,5 @@ public interface PengajuanSuratService {
 	 String selectNo_surat();
 	 int getCountProcessedSurat(int npm);
 	 int getCountFinishedSurat(int npm);
+	 void updateStatusUpload(String id_pengajuan_surat);
 }

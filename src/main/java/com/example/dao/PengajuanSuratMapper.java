@@ -36,6 +36,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuan (@Param("username") String username);
     
@@ -102,6 +103,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuan ();
     
@@ -122,6 +124,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByDate (@Param("startDate") String startDate, @Param("endDate") String endDate);
     
@@ -136,6 +139,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByDateMahasiswa (@Param("startDate") String startDate, @Param("endDate") String endDate, @Param("name") String name);
     
@@ -150,6 +154,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatusMahasiswa (@Param("status") String status, @Param("name") String name);
     
@@ -167,6 +172,7 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
     
@@ -181,11 +187,12 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectAllPengajuanFilterByJenisMahasiswa (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
   
-    @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} WHERE id = #{id_pengajuan_surat}")
-    void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status);
+    @Update("UPDATE pengajuan_surat SET id_status_surat = #{id_status} , username_pegawai = #{pegawai} WHERE id = #{id_pengajuan_surat}")
+    void updateStatusPengajuanSurat(@Param("id_pengajuan_surat") int id_pengajuan_surat, @Param("id_status") int id_status, @Param("pegawai") String pegawai);
     @Select("select * from pengajuan_surat where id_status_surat = #{status}")
     @Results(value= {
     @Result (property="no_surat", column="no_surat"),
@@ -197,12 +204,13 @@ public interface PengajuanSuratMapper {
     @Result(property="username_pegawai", column="username_pegawai"),
     @Result(property="accountPegawai", column="username_pegawai", one=@One(select="selectUserAccountPegawai")),
     @Result(property="id_status_surat", column="id_status_surat"),
+    @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
     List<PengajuanSuratModel> selectPengajuanByStatus (@Param("status") String status);
 
-    @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, id_status_surat) "
+    @Insert("INSERT INTO pengajuan_surat (no_surat, username_pengaju, tgl_mohon, id_jenis_surat, keterangan, alasan_izin, tgl_mulai_izin, tgl_sls_izin, id_matkul_terkait, username_pegawai, id_status_surat) "
     		+ "VALUES (#{no_surat}, #{username_pengaju}, #{tgl_mohon}, #{id_jenis_surat}, #{keterangan}, #{alasan_izin}, #{tgl_mulai_izin}, #{tgl_sls_izin}, "
-    		+ "#{id_matkul_terkait}, #{id_status_surat})")
+    		+ "#{id_matkul_terkait}, #{username_pegawai}, #{id_status_surat})")
     void addPengajuanSurat (PengajuanSuratModel pengajuanSuratModel);
     
     @Select("SELECT no_surat FROM pengajuan_surat ORDER BY ID DESC LIMIT 1")
@@ -213,4 +221,7 @@ public interface PengajuanSuratMapper {
     
     @Select("SELECT COUNT(*) FROM pengajuan_surat WHERE id_status_surat IN (2, 4) AND username_pengaju = #{npm}")
     int getCountFinishedSurat(@Param("npm") int npm);
+    
+    @Update("UPDATE pengajuan_surat SET status_upload = 1 WHERE id = #{id_pengajuan_surat}")
+    void updateStatusUpload(@Param("id_pengajuan_surat") String id_pengajuan_surat);
 }

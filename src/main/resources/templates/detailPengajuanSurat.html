@@ -27,6 +27,7 @@
 					
 					<h4>Detail Surat</h4>
 					<input type="hidden" th:value="${surat.id}" id="pengajuan_surat_id" />
+					<input type="hidden" th:value="${surat.id_status_surat}" id="id_status_surat"/>
 					<table class="table" id="table_custom">
 						<tbody>
 							<tr>
@@ -102,7 +103,10 @@
 					function() {
 						if($.inArray($("#jenis_surat").attr("value"), ['3','4','5']) >= 0)
 						{
-							$("#upload").show();
+							if($("#id_status_surat").val() == '4'){
+								$("#upload").show();
+							}
+							
 						} else {
 							$("#upload").css("display","none");
 						}

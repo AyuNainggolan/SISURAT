@@ -17,10 +17,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable().authorizeRequests()
 		.antMatchers("/").permitAll()
+		.antMatchers("/pengajuan/riwayat/**").hasRole("MAHASISWA")
+		.antMatchers("/pengajuan/tambah/**").hasRole("MAHASISWA")
+		.antMatchers("/pengajuan/download/**").hasRole("MAHASISWA")
+		.antMatchers("/pengajuan/viewall/**").hasRole("STAF")
+		.antMatchers("/pengajuan/view/**").hasRole("STAF")
+		.antMatchers("/pengajuan/upload/**").hasRole("STAF")
 		.anyRequest()
 		.authenticated()
 		.and()
-		.formLogin().defaultSuccessUrl("/pengajuan/riwayat")
+		.formLogin().defaultSuccessUrl("/default")
 		.loginPage("/login").permitAll() 
 		.and()
 		.logout().permitAll();

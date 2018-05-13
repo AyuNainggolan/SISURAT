@@ -108,7 +108,7 @@
 	 	        						<div>
 	 	        							<a style="color: gray" th:href="'/pengajuan/riwayat/' + ${item.id}" class="btn"> <i class="fa fa-eye"></i></a>
 										
-											<a style="color: gray" th:href="'/pengajuan/download/' + ${item.id}" class="btn"> <i class="fa fa-download"></i></a>
+											<a style="color: gray" th:if="${item.status_upload == 1}" th:href="'/pengajuan/download/' + ${item.id}" class="btn"> <i class="fa fa-download"></i></a>
 										</div>
         							</td>
 								</tr>
