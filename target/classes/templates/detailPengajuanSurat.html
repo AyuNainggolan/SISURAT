@@ -17,9 +17,17 @@
 
 
 				<div class="col-md-8">
-
+					<div id="error_msg" th:if="${error != null}" >
+						<label th:text="${error}" style="color:D8000C;"></label>
+					</div>
+					
+					<div id="sukses_msg" th:if="${sukses != null}" >
+						<label th:text="${sukses}" style="color:#4F8A10;"></label>
+					</div>
+					
 					<h4>Detail Surat</h4>
 					<input type="hidden" th:value="${surat.id}" id="pengajuan_surat_id" />
+					<input type="hidden" th:value="${surat.id_status_surat}" id="id_status_surat"/>
 					<table class="table" id="table_custom">
 						<tbody>
 							<tr>
@@ -32,7 +40,7 @@
 								<th>No Surat</th>
 								<td th:text="${surat.no_surat}"></td>
 								<th>Jenis Surat</th>
-								<td th:text="${jenis_surat}"></td>
+								<td id="jenis_surat" th:value="${surat.id_jenis_surat}" th:text="${jenis_surat}"></td>
 							</tr>
 							<tr>
 								<th>Tanggal Permohonan</th>
@@ -62,7 +70,8 @@
 						</tbody>
 					</table>
 
-					<div>
+					<div id="upload" style="display:none; border: 1px solid black; border-style: dotted; padding: 15px; border-radius: 14px;font-size: 14px;">
+						<label style="font-weight: bolder;">Unggah surat yang telah selesai</label>
 						<form method="POST" enctype="multipart/form-data" action="/pengajuan/upload">
 							<table>
 								<tr>
@@ -71,7 +80,7 @@
 								</tr>
 								<tr>
 									<td></td>
-									<td><input type="submit" value="Upload" /></td>
+									<td><input id="btn-upload" type="submit" value="Upload" /></td>
 								</tr>
 							</table>
 						</form>
@@ -88,9 +97,21 @@
 	</footer>
 </body>
 <script th:inline="javascript">
+
 	$(document)
 			.ready(
 					function() {
+						if($.inArray($("#jenis_surat").attr("value"), ['3','4','5']) >= 0)
+						{
+							if($("#id_status_surat").val() == '4'){
+								$("#upload").show();
+							}
+							
+						} else {
+							$("#upload").css("display","none");
+						}
+
+						
 						$(".fa-edit")
 								.click(
 										function() {
@@ -103,8 +124,7 @@
 													+ ' <option value="4">Selesai</option>'
 													+ ' </select>';
 											$("#status").append(html);
-											$("#status_surat").css("font-size",
-													"13px");
+											$("#status_surat").css("font-size","13px");
 										});
 
 						$(document)
@@ -114,12 +134,8 @@
 										function(val) {
 											console.log(this.value);
 											if (confirm("Apakah Anda yakin ingin mengubah status surat?")) {
-												var id_pengajuan_surat = $(
-														"#pengajuan_surat_id")
-														.val();
-												console
-														.log("ini id pengajuan surat"
-																+ id_pengajuan_surat);
+												var id_pengajuan_surat = $("#pengajuan_surat_id").val();
+												
 												window.location
 														.replace("/pengajuan/ubah/"
 																+ id_pengajuan_surat

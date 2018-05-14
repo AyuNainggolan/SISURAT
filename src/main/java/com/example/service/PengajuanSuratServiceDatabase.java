@@ -101,9 +101,9 @@ public class PengajuanSuratServiceDatabase implements PengajuanSuratService{
         return pengajuanSuratMapper.selectAllPengajuanFilterByJenisMahasiswa(id_jenis_surat, name);
     }
     
-  	public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat, String name){
+  	public List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (int id_jenis_surat){
   		log.info("Filter surat by jenis: "+id_jenis_surat);
-  		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat, name);
+  		return pengajuanSuratMapper.selectAllPengajuanFilterByJenis(id_jenis_surat);
   	}
   	
   	@Override

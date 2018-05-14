@@ -174,7 +174,7 @@ public interface PengajuanSuratMapper {
     @Result(property="id_status_surat", column="id_status_surat"),
     @Result(property="status_upload", column="status_upload"),
     @Result(property="statusSurat", column="id_status_surat", one=@One(select="selectStatusSurat"))})
-    List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat, @Param("name") String name);
+    List<PengajuanSuratModel> selectAllPengajuanFilterByJenis (@Param("id_jenis_surat") int id_jenis_surat);
     
     @Select("select * from pengajuan_surat where id_jenis_surat = #{id_jenis_surat} and username_pengaju=#{name}")
     @Results(value= {

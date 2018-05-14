@@ -140,7 +140,7 @@ public class FrontController {
     		}else {
     			namaPegawai = "Not assigned";
     		}
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
@@ -170,7 +170,7 @@ public class FrontController {
     		}else {
     			namaPegawai = "Not assigned";
     		}		
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
@@ -201,11 +201,11 @@ public class FrontController {
     		}else {
     			namaPegawai = "Not assigned";
     		}
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
-    	model.addAttribute("lstSurat", lstSurat);
+    	model.addAttribute("letter", lstSurat);
     	model.addAttribute("jenisSurat", allJenisSurat);
     	model.addAttribute("lstStatus", lstStatus);
     	model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
@@ -263,7 +263,7 @@ public class FrontController {
     		}else {
     			namaPegawai = "Not assigned";
     		}
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
+    		
     		System.out.println("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
@@ -284,6 +284,7 @@ public class FrontController {
     	List<JenisSuratModel> allJenisSurat = jenisSuratDAO.selectAllJenisSurat();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
+		
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		String employeeName;
@@ -295,8 +296,8 @@ public class FrontController {
     			namaPegawai = "Not assigned";
     		}
     		
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
-    		System.out.println("nama pegawai "+namaPegawai);
+    		
+    		log.info("nama pegawai "+namaPegawai);
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
@@ -333,7 +334,16 @@ public class FrontController {
 	@RequestMapping("/pengajuan/view/{id_pengajuan_surat}")
 	public String detailPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
 		PengajuanSuratModel surat = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
-		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
+		String nama_matkul;
+		
+		if(surat.getId_matkul_terkait() == 0) {
+			nama_matkul = "-";
+		} else {
+			MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
+			nama_matkul = matkul.getNama_matkul();
+		}
+		
+		
 		String npm = surat.getUsername_pengaju();
 		String nama_pegawai;
 		String tglMohon = new SimpleDateFormat("yyyy-mm-dd").format(surat.getTgl_mohon());
@@ -350,7 +360,7 @@ public class FrontController {
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", nama_pegawai);
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(surat.getId_status_surat()));
-		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		model.addAttribute("nama_matkul", nama_matkul);
 		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(npm)));
     	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(npm)));
 		return "detailPengajuanSurat";
@@ -529,7 +539,8 @@ public class FrontController {
     	String namaMahasiswa, namaPegawai;
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
-    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat, name);
+    	List<PengajuanSuratModel> lstSurat = pengajuanSuratDAO.selectAllPengajuanFilterByJenis(jenisSurat);
+    	log.info("ini lstSurat"+lstSurat);
     	for(int i=0;i<lstSurat.size();i++) {
     		namaMahasiswa = searchName(lstSurat.get(i).getUsername_pengaju());
     		String employeeName;
@@ -541,7 +552,6 @@ public class FrontController {
     			namaPegawai = "Not assigned";
     		}
     		
-    		namaPegawai = searchNamaPegawai(lstSurat.get(i).getUsername_pegawai());
     		lstSurat.get(i).setUsername_pengaju(namaMahasiswa);
     		lstSurat.get(i).setUsername_pegawai(namaPegawai);
     	} 
@@ -556,17 +566,23 @@ public class FrontController {
 	@RequestMapping("/pengajuan/riwayat/{id_pengajuan_surat}")
 	public String detailRiwayatPengajuanSurat(Model model, @PathVariable(value = "id_pengajuan_surat") int id_pengajuan_surat) {
 		PengajuanSuratModel letter1 = pengajuanSuratDAO.getDetailPengajuanSurat(id_pengajuan_surat);
-		MataKuliahModel matkul = matkulDAO.getMatakuliahById(letter1.getId_matkul_terkait());
 		String npm = letter1.getUsername_pengaju();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName(); //get logged in username
-		String nama_pegawai;
 		String tglMohon = new SimpleDateFormat("yyyy-mm-dd").format(letter1.getTgl_mohon());
+		String nama_pegawai, nama_matkul;
 		if(letter1.getUsername_pegawai() == null) {
 			
 			nama_pegawai = "Not Assigned";
 		} else {
 			nama_pegawai = this.searchNamaPegawai(letter1.getUsername_pegawai());
+		}
+		
+		if(letter1.getId_matkul_terkait() == 0) {
+			nama_matkul = "-";
+		} else {
+			MataKuliahModel matkul = matkulDAO.getMatakuliahById(letter1.getId_matkul_terkait());
+			nama_matkul = matkul.getNama_matkul();
 		}
 		
 		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
@@ -576,7 +592,7 @@ public class FrontController {
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(letter1.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", nama_pegawai);
 		model.addAttribute("status_surat", statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
-		model.addAttribute("nama_matkul", matkul.getNama_matkul());
+		model.addAttribute("nama_matkul", nama_matkul);
 		model.addAttribute("finished_surat", pengajuanSuratDAO.getCountFinishedSurat(Integer.parseInt(name)));
     	model.addAttribute("processed_surat", pengajuanSuratDAO.getCountProcessedSurat(Integer.parseInt(name)));
 		return "riwayatSuratDetail";

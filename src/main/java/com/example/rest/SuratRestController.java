@@ -41,7 +41,10 @@ public class SuratRestController {
 		if(surat != null) {
 			StatusSuratModel status = statusSuratService.selectStatusSurat(surat.getId_status_surat());
 			JenisSuratModel jenis = jenisSuratService.selectJenisSurat(surat.getId_jenis_surat());
-			MahasiswaModel mahasiswa = restTemplate.getForObject("https://apap-fasilkom.herokuapp.com/api/mahasiswa/view/id/3", MahasiswaModel.class);
+			
+			String username = surat.getUsername_pengaju();
+			MahasiswaModel mahasiswa = restTemplate.getForObject("https://apap-fasilkom.herokuapp.com/api/mahasiswa/view/npm/"+username, MahasiswaModel.class);
+			
 			ApiSuratModel api_surat = new ApiSuratModel(mahasiswa.getId(), jenis.getNama(), surat.getKeterangan(), status.getNama());
 		
 			HashMap<String, Object> result = new HashMap<String, Object>();
