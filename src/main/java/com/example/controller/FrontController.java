@@ -336,6 +336,7 @@ public class FrontController {
 		MataKuliahModel matkul = matkulDAO.getMatakuliahById(surat.getId_matkul_terkait());
 		String npm = surat.getUsername_pengaju();
 		String nama_pegawai;
+		String tglMohon = new SimpleDateFormat("yyyy-mm-dd").format(surat.getTgl_mohon());
 		
 		if(surat.getUsername_pegawai() == null) {
 			nama_pegawai = "Not Assigned";
@@ -344,6 +345,7 @@ public class FrontController {
 		}
 		log.info("ini pegawai di view "+ nama_pegawai);
 		model.addAttribute("surat", surat);
+		model.addAttribute("tglMohon", tglMohon);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(surat.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", nama_pegawai);
@@ -410,6 +412,7 @@ public class FrontController {
 				pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
 				String msg = "Pengajuan surat Anda berhasil disimpan";
 				model.addAttribute("sukses", msg);
+				viewPengajuanSurat(model);
 				return "riwayatSurat";
 			}else {
 				String msg = "Maaf, hanya asdos yang bisa mengajukan Surat Keterangan Asisten Dosen";
@@ -420,6 +423,7 @@ public class FrontController {
 			pengajuanSuratDAO.addPengajuanSurat(pengajuanSurat);
 			String msg = "Pengajuan surat Anda berhasil disimpan";
 			model.addAttribute("sukses", msg);
+			viewPengajuanSurat(model);
 			return "riwayatSurat";
 		}
 		
@@ -557,6 +561,7 @@ public class FrontController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName(); //get logged in username
 		String nama_pegawai;
+		String tglMohon = new SimpleDateFormat("yyyy-mm-dd").format(letter1.getTgl_mohon());
 		if(letter1.getUsername_pegawai() == null) {
 			
 			nama_pegawai = "Not Assigned";
@@ -566,6 +571,7 @@ public class FrontController {
 		
 		log.info("ini status surat "+statusSuratDAO.getStatusSurat(letter1.getId_status_surat()));
 		model.addAttribute("letter1", letter1);
+		model.addAttribute("tglMohon", tglMohon);
 		model.addAttribute("nama", this.searchName(npm));
 		model.addAttribute("jenis_surat", jenisSuratDAO.selectJenisSurat(letter1.getId_jenis_surat()).getNama());
 		model.addAttribute("nama_admin", nama_pegawai);
